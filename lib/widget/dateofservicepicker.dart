@@ -34,6 +34,7 @@ class _DateOfServiceState extends State<DateOfService> {
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: <Widget>[
               Container(
+                width: MediaQuery.of(context).size.width * 0.80,
                 decoration: const BoxDecoration(
                     border: Border(
                       top: BorderSide(
@@ -49,7 +50,7 @@ class _DateOfServiceState extends State<DateOfService> {
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
                       InkWell(
                         child: Text(_serviceDate,

@@ -1,3 +1,5 @@
+import 'package:YOURDRS_FlutterAPP/common/app_constants.dart';
+
 class AppStrings {
   static const welcome = 'Welcome';
   static const signIn = "Signin";
@@ -23,4 +25,19 @@ class AppStrings {
   static const lName = 'Last Name';
   static const dobDropDownText = 'Date of Birth';
   static const dosDropDownText = 'Date of Service';
+  static const alertDialogDictation = 'Dictation';
+  static const dialogSubmit = 'Submit';
+  static const dialogCancel = 'Cancel';
+}
+
+class ApiUrlConstants {
+  // for getting Locations//
+  static const getLocation =
+      AppConstants.dioBaseUrl + "api/Schedule/GetMemberLocations";
+  // for getting Provider
+  static const getProviders =
+      AppConstants.dioBaseUrl + "api/Schedule/GetAssociatedProvider";
+  //for getting Schedules
+  static const getSchedules =
+      AppConstants.dioBaseUrl + "api/Schedule/GetSchedules";
 }

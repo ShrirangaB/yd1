@@ -13,14 +13,14 @@ part of 'textvalid_bloc.dart';
 enum FieldError { Empty, Invalid }
 
 class TextvalidState {
-  final bool isBusy;
+  final bool isFull;
   final FieldError fNameError;
   final FieldError lNameError;
   final FieldError descriptionError;
   final bool submissionSuccess;
 
   TextvalidState({
-    this.isBusy: false,
+    this.isFull: false,
     this.fNameError,
     this.lNameError,
     this.descriptionError,

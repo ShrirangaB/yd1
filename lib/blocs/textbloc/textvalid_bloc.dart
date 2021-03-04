@@ -17,7 +17,7 @@ class TextvalidBloc extends Bloc<TextvalidEvent, TextvalidState> {
     TextvalidEvent event,
   ) async* {
     if (event is TextvalidEventSubmit) {
-      yield TextvalidState(isBusy: true);
+      yield TextvalidState(isFull: true);
 
       if (this.isFieldEmpty(event.fName)) {
         yield TextvalidState(fNameError: FieldError.Empty);

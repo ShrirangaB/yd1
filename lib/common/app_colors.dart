@@ -25,4 +25,8 @@ class CustomizedColors {
   static const raisedButtonText = Color.fromRGBO(92, 136, 217, 1);
   static const listText = Color.fromRGBO(92, 136, 217, 1);
   static const cameraIconcolor = Color.fromRGBO(188, 200, 231, 1);
+  static const whiteColor = Colors.white;
+  static const dialogCancelButton = Colors.grey;
+  static const inactiveFgColorCustom = Color.fromRGBO(153, 153, 153, 1);
+  static const activeRedColor = Colors.red;
 }

@@ -1,42 +1,47 @@
-import 'package:YOURDRS_FlutterAPP/common/app_colors.dart';
-import 'package:YOURDRS_FlutterAPP/common/app_strings.dart';
+import 'package:YOURDRS_FlutterAPP/network/models/provider.dart';
+import 'package:YOURDRS_FlutterAPP/network/services/appointment_service.dart';
+import 'package:YOURDRS_FlutterAPP/widget/buttons/dropdowns.dart';
 import 'package:flutter/material.dart';
+import 'dart:async';
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 
-class Provider extends StatefulWidget {
+class ProviderDropDowns extends StatefulWidget {
   @override
   _ProviderState createState() => _ProviderState();
 }
 
-class _ProviderState extends State<Provider> {
+class _ProviderState extends State<ProviderDropDowns> {
   var _currentSelectedValue;
-  var _currencies = [
-    "Provider",
-    "Location",
-    "Status",
-  ];
+  final String url = "https://jsonplaceholder.typicode.com/users";
+
+  List data = List(); //edited line
+  Services apiServices = Services();
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  void didChangeDependencies() async {
+    // TODO: implement didChangeDependencies
+    super.didChangeDependencies();
+    Provider provider = await apiServices.getProviders();
+    data = provider.providerList;
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
-//color: Colors.yellow,
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Padding(
-            padding: const EdgeInsets.all(5),
-            child: Text(
-              AppStrings.treatingProvider,
-              style: TextStyle(
-                fontSize: 17,
-                color: CustomizedColors.accentColor,
-              ),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(top: 15),
+            padding: const EdgeInsets.all(10),
             child: Container(
-                height: 58,
-                width: 350,
+                height: 55,
+                width: MediaQuery.of(context).size.width * 0.85,
                 child: FormField<String>(
                   builder: (FormFieldState<String> state) {
                     return InputDecorator(
@@ -44,23 +49,22 @@ class _ProviderState extends State<Provider> {
                           border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(5.0))),
                       isEmpty: _currentSelectedValue == '',
-                      child: DropdownButtonHideUnderline(
-                        child: DropdownButton<String>(
-                          value: _currentSelectedValue,
-                          isDense: true,
-                          onChanged: (String newValue) {
-                            setState(() {
-                              _currentSelectedValue = newValue;
-                              state.didChange(newValue);
-                            });
-                          },
-                          items: _currencies.map((String value) {
-                            return DropdownMenuItem<String>(
-                              value: value,
-                              child: Text(value),
-                            );
-                          }).toList(),
-                        ),
+                      child: DropDown(
+                        value: _currentSelectedValue,
+                        hint: "Provider",
+                        onChanged: (String newValue) {
+                          setState(() {
+                            _currentSelectedValue = newValue;
+                            state.didChange(newValue);
+                            print('Provider:' + _currentSelectedValue);
+                          });
+                        },
+                        items: data.map((item) {
+                          return DropdownMenuItem<String>(
+                            child: Text(item.displayname),
+                            value: item.providerId.toString(),
+                          );
+                        }).toList(),
                       ),
                     );
                   },

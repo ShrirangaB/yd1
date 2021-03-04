@@ -42,6 +42,12 @@ dependencies:
   flutter_bloc: 
   #equatable
   equatable: 
+  # Network client
+  dio: ^3.0.10
+  # Network logging
+  pretty_dio_logger: ^1.1.0
+  #toggle Switch
+  toggle_switch: ^0.1.8
 
 dev_dependencies:
   flutter_test:

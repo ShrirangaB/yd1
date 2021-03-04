@@ -45,7 +45,7 @@ class _PlayButtonState extends State<PlayButton> {
 //--------passing the Remoteurl in play.
   Future play() async {
     int result = await _audio.play(
-        "https://www.learningcontainer.com/wp-content/uploads/2020/02/Sample-OGG-File.ogg");
+        "https://www.mediacollege.com/downloads/sound-effects/nature/forest/rainforest-ambient.mp3");
     if (result == 1) {
       setState(() {
         _isPlaying = true;

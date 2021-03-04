@@ -1,6 +1,5 @@
 import 'package:YOURDRS_FlutterAPP/ui/patient_details/manual_dictaions/manual_dictations.dart';
 import 'package:YOURDRS_FlutterAPP/ui/patient_details/manual_dictaions/submit_new_dictation.dart';
-import 'package:YOURDRS_FlutterAPP/ui/patient_details/patient_dictation.dart';
 
 import 'package:YOURDRS_FlutterAPP/widget/dateofbirthpicker.dart';
 import 'package:flutter/material.dart';

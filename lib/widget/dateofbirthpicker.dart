@@ -30,8 +30,6 @@ class _DateOfBirthState extends State<DateOfBirth> {
       padding: const EdgeInsets.all(10),
       child: Material(
         child: Center(
-          // Center is a layout widget. It takes a single child and positions it
-          // in the middle of the parent.
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: <Widget>[
