@@ -28,6 +28,7 @@ class AppStrings {
   static const alertDialogDictation = 'Dictation';
   static const dialogSubmit = 'Submit';
   static const dialogCancel = 'Cancel';
+  static const dateFormatr = 'yMd';
 }
 
 class ApiUrlConstants {

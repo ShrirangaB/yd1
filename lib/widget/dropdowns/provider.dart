@@ -7,6 +7,9 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 class ProviderDropDowns extends StatefulWidget {
+  final onTapOfProvider;
+  final String selectedProviderId;
+  ProviderDropDowns({@required this.onTapOfProvider, this.selectedProviderId});
   @override
   _ProviderState createState() => _ProviderState();
 }
@@ -57,6 +60,7 @@ class _ProviderState extends State<ProviderDropDowns> {
                             _currentSelectedValue = newValue;
                             state.didChange(newValue);
                             print('Provider:' + _currentSelectedValue);
+                            widget.onTapOfProvider(newValue);
                           });
                         },
                         items: data.map((item) {

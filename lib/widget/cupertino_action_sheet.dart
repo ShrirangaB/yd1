@@ -16,7 +16,7 @@ class _CameraActionSheetState extends State<CameraActionSheet> {
   void _show(BuildContext ctx) {
     showCupertinoModalPopup(
         context: ctx,
-        builder: (_) => CupertinoActionSheet(
+        builder: (ctxtx) => CupertinoActionSheet(
               actions: [
                 CupertinoActionSheetAction(
                     onPressed: openCamera, child: Text('Camera')),
@@ -25,13 +25,16 @@ class _CameraActionSheetState extends State<CameraActionSheet> {
               ],
               cancelButton: CupertinoActionSheetAction(
                 isDestructiveAction: true,
-                onPressed: () => Navigator.of(context).pop(),
+                onPressed: () {
+                  Navigator.pop(ctxtx);
+                },
                 child: Text('Close'),
               ),
             ));
   }
 
   Future openCamera() async {
+    // ignore: deprecated_member_use
     var image = await ImagePicker.pickImage(source: ImageSource.camera);
     setState(() {
       _image = image;
@@ -39,6 +42,7 @@ class _CameraActionSheetState extends State<CameraActionSheet> {
   }
 
   Future openGallery() async {
+    // ignore: deprecated_member_use
     var picture = await ImagePicker.pickImage(source: ImageSource.gallery);
     setState(() {
       _image = picture;

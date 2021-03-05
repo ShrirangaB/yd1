@@ -1,9 +1,12 @@
 import 'package:YOURDRS_FlutterAPP/common/app_colors.dart';
+import 'package:YOURDRS_FlutterAPP/common/app_strings.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class DateOfBirth extends StatefulWidget {
+  final dobSelect;
+  DateOfBirth({@required this.dobSelect});
   @override
   _DateOfBirthState createState() => _DateOfBirthState();
 }
@@ -11,16 +14,19 @@ class DateOfBirth extends StatefulWidget {
 class _DateOfBirthState extends State<DateOfBirth> {
   String _birthDate = 'Date of Birth';
 
-  Future<void> _selectDate(BuildContext context) async {
+  Future<void> _selectDate(BuildContext ctxdob) async {
     final DateTime d = await showDatePicker(
-      context: context,
+      context: ctxdob,
       initialDate: DateTime.now(),
       firstDate: DateTime(1930),
       lastDate: DateTime.now(),
     );
     if (d != null)
       setState(() {
-        _birthDate = DateFormat.yMMMMd("en_US").format(d);
+        final DateFormat formatter = DateFormat(AppStrings.dateFormatr);
+        _birthDate = formatter.format(d);
+
+        widget.dobSelect(_birthDate);
       });
   }
 
@@ -66,7 +72,6 @@ class _DateOfBirthState extends State<DateOfBirth> {
                           Icons.calendar_today_sharp,
                           color: CustomizedColors.accentColor,
                         ),
-                        // tooltip: 'Tap to open date picker',
                         onPressed: () {
                           _selectDate(context);
                         },

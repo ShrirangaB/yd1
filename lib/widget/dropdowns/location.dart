@@ -7,6 +7,9 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 class LocationDropDown extends StatefulWidget {
+  final onTapOfLocation;
+  final String selectedLocationId;
+  LocationDropDown({@required this.onTapOfLocation, this.selectedLocationId});
   @override
   _LocationState createState() => _LocationState();
 }
@@ -22,6 +25,7 @@ class _LocationState extends State<LocationDropDown> {
   void initState() {
     super.initState();
     // this.getLocation();
+    _currentSelectedValue = widget.selectedLocationId;
   }
 
   @override
@@ -49,15 +53,16 @@ class _LocationState extends State<LocationDropDown> {
                           border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(5.0))),
                       isEmpty: _currentSelectedValue == '',
-                      child: DropDown(
+                      child: DropdownButton<String>(
                         value: _currentSelectedValue,
-                        hint: "Location",
-                        onChanged: (String newValue) {
+                        isExpanded: true,
+                        hint: Text("Location"),
+                        onChanged: (value) {
                           setState(() {
-                            _currentSelectedValue = newValue;
-                            state.didChange(newValue);
-                            print('Location:' + _currentSelectedValue);
+                            _currentSelectedValue = value;
+                            print(_currentSelectedValue);
                           });
+                          widget.onTapOfLocation(value);
                         },
                         items: data.map((item) {
                           return DropdownMenuItem<String>(

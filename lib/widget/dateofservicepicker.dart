@@ -4,6 +4,8 @@ import 'package:intl/intl.dart';
 import 'package:flutter/cupertino.dart';
 
 class DateOfService extends StatefulWidget {
+  final dosSelect;
+  DateOfService({@required this.dosSelect});
   @override
   _DateOfServiceState createState() => _DateOfServiceState();
 }
@@ -11,9 +13,9 @@ class DateOfService extends StatefulWidget {
 class _DateOfServiceState extends State<DateOfService> {
   String _serviceDate = 'Service date';
 
-  Future<void> _selectDate(BuildContext context) async {
+  Future<void> _selectDate(BuildContext ctxdos) async {
     final DateTime d = await showDatePicker(
-      context: context,
+      context: ctxdos,
       initialDate: DateTime.now(),
       firstDate: DateTime(2015),
       lastDate: DateTime(2030),
@@ -21,6 +23,7 @@ class _DateOfServiceState extends State<DateOfService> {
     if (d != null)
       setState(() {
         _serviceDate = DateFormat.yMMMMd("en_US").format(d);
+        widget.dosSelect(_serviceDate);
       });
   }
 
@@ -66,7 +69,6 @@ class _DateOfServiceState extends State<DateOfService> {
                           Icons.calendar_today_sharp,
                           color: CustomizedColors.accentColor,
                         ),
-                        // tooltip: 'Tap to open date picker',
                         onPressed: () {
                           _selectDate(context);
                         },
