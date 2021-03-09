@@ -45,9 +45,9 @@ class _ManualDictationsState extends State<ManualDictations> {
               Expanded(
                 child: TabBarView(
                   children: [
-                    //   First screen
+                    //--------First screen
                     SubmitNewDictation(),
-                    //second screen
+                    //--------second screen
                     AllDictations(),
                   ],
                 ),

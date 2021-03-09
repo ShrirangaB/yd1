@@ -1,4 +1,3 @@
-import 'package:YOURDRS_FlutterAPP/blocs/textbloc/textvalid_bloc.dart';
 import 'package:YOURDRS_FlutterAPP/common/app_colors.dart';
 import 'package:YOURDRS_FlutterAPP/common/app_strings.dart';
 import 'package:YOURDRS_FlutterAPP/widget/buttons/raised_buttons.dart';
@@ -6,11 +5,7 @@ import 'package:YOURDRS_FlutterAPP/widget/cupertino_action_sheet.dart';
 import 'package:YOURDRS_FlutterAPP/widget/dateofbirthpicker.dart';
 import 'package:YOURDRS_FlutterAPP/widget/dateofservicepicker.dart';
 import 'package:YOURDRS_FlutterAPP/widget/dropdowns/appointmenttype.dart';
-import 'package:YOURDRS_FlutterAPP/widget/dropdowns/dictation.dart';
 import 'package:YOURDRS_FlutterAPP/widget/dropdowns/documenttype.dart';
-import 'package:YOURDRS_FlutterAPP/widget/dropdowns/location.dart';
-import 'package:YOURDRS_FlutterAPP/widget/dropdowns/practise.dart';
-import 'package:YOURDRS_FlutterAPP/widget/dropdowns/provider.dart';
 import 'package:flutter/material.dart';
 import 'package:toggle_switch/toggle_switch.dart';
 
@@ -31,6 +26,9 @@ class _SubmitNewDictationState extends State<SubmitNewDictation> {
   String currentDOS;
 
   List<bool> _isSelected = [true, false];
+
+  // @override
+  // bool get wantKeepAlive => true;
 
   @override
   Widget build(BuildContext context) {
@@ -62,13 +60,13 @@ class _SubmitNewDictationState extends State<SubmitNewDictation> {
             SizedBox(height: 15),
 
 //------Location drop down
-            LocationDropDown(
-              onTapOfLocation: (String newValue) {
-                _selectedLocation = newValue;
+            // LocationDropDown(
+            //   onTapOfLocation: (String newValue) {
+            //     _selectedLocation = newValue;
 
-                print('from UI:' + newValue);
-              },
-            ),
+            //     print('from UI:' + newValue);
+            //   },
+            // ),
             SizedBox(height: 15),
 //-----------text for provider
             Text(
@@ -81,16 +79,7 @@ class _SubmitNewDictationState extends State<SubmitNewDictation> {
             SizedBox(height: 15),
 
 //------Provider drop down
-            ProviderDropDowns(
-              onTapOfProvider: (String value) {
-                // setState(() {
-                _selectedProviderId = value;
-                // });
 
-                print('from UI:' + value);
-              },
-              // selectedProviderId: null,
-            ),
             SizedBox(height: 15),
 //----------label text
             Padding(
@@ -162,8 +151,11 @@ class _SubmitNewDictationState extends State<SubmitNewDictation> {
 
                   contentPadding: EdgeInsets.all(20),
                   // hintText: AppStrings.descp,
+
                   border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(5.0)),
+                    borderSide: BorderSide(color: CustomizedColors.accentColor),
+                    borderRadius: BorderRadius.circular(5.0),
+                  ),
                 ),
               ),
             ),
@@ -207,11 +199,28 @@ class _SubmitNewDictationState extends State<SubmitNewDictation> {
               },
             ),
             SizedBox(height: 15),
-            DocumentType(),
+            Text(
+              AppStrings.documentType,
+              style: TextStyle(
+                fontSize: 17,
+                color: CustomizedColors.accentColor,
+              ),
+            ),
+            SizedBox(height: 15),
+            DocumentDropDown(),
 
             SizedBox(height: 15),
+            //----------------text for appointment type
+            Text(
+              AppStrings.appointmentType,
+              style: TextStyle(
+                fontSize: 17,
+                color: CustomizedColors.accentColor,
+              ),
+            ),
+            SizedBox(height: 15),
 //-----------------Appointment type Dropdown
-            AppointmentType(),
+            AppointmentDropDown(),
             SizedBox(height: 15),
             Padding(
               padding: const EdgeInsets.all(5),
@@ -242,7 +251,7 @@ class _SubmitNewDictationState extends State<SubmitNewDictation> {
                 activeBgColor: CustomizedColors.accentColor,
                 activeFgColor: CustomizedColors.whiteColor,
                 inactiveBgColor: Colors.grey[300],
-                inactiveFgColor: CustomizedColors.accentColor,
+                inactiveFgColor: Colors.grey[700],
                 labels: ['YES', 'NO'],
                 icons: [Icons.check_circle, Icons.cancel_rounded],
                 onToggle: (toggleIndex) {
@@ -388,10 +397,9 @@ class _SubmitNewDictationState extends State<SubmitNewDictation> {
                 _fName.clear();
                 _lName.clear();
                 _descreiption.clear();
-                // _currentSelectedValue.clear();
               },
               text: AppStrings.clearAll,
-            )
+            ),
           ],
         ),
       ),

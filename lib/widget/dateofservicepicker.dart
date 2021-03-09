@@ -1,4 +1,5 @@
 import 'package:YOURDRS_FlutterAPP/common/app_colors.dart';
+import 'package:YOURDRS_FlutterAPP/common/app_strings.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/cupertino.dart';
@@ -10,7 +11,8 @@ class DateOfService extends StatefulWidget {
   _DateOfServiceState createState() => _DateOfServiceState();
 }
 
-class _DateOfServiceState extends State<DateOfService> {
+class _DateOfServiceState extends State<DateOfService>
+    with AutomaticKeepAliveClientMixin {
   String _serviceDate = 'Service date';
 
   Future<void> _selectDate(BuildContext ctxdos) async {
@@ -22,7 +24,8 @@ class _DateOfServiceState extends State<DateOfService> {
     );
     if (d != null)
       setState(() {
-        _serviceDate = DateFormat.yMMMMd("en_US").format(d);
+        final DateFormat formatter = DateFormat(AppStrings.dateFormatr);
+        _serviceDate = formatter.format(d);
         widget.dosSelect(_serviceDate);
       });
   }
@@ -83,4 +86,8 @@ class _DateOfServiceState extends State<DateOfService> {
       ),
     );
   }
+
+  @override
+  // TODO: implement wantKeepAlive
+  bool get wantKeepAlive => true;
 }

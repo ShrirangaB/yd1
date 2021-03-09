@@ -41,4 +41,9 @@ class ApiUrlConstants {
   //for getting Schedules
   static const getSchedules =
       AppConstants.dioBaseUrl + "api/Schedule/GetSchedules";
+  //for document type
+  static const getDocumenttype =
+      AppConstants.dioBaseUrl + "api/MasterData/GetExternalDocumentTypes";
+  static const getAppointmenttype =
+      AppConstants.dioBaseUrl + "api/MasterData/GetAppointmentTypes";
 }

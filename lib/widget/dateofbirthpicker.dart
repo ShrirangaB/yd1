@@ -11,7 +11,8 @@ class DateOfBirth extends StatefulWidget {
   _DateOfBirthState createState() => _DateOfBirthState();
 }
 
-class _DateOfBirthState extends State<DateOfBirth> {
+class _DateOfBirthState extends State<DateOfBirth>
+    with AutomaticKeepAliveClientMixin {
   String _birthDate = 'Date of Birth';
 
   Future<void> _selectDate(BuildContext ctxdob) async {
@@ -86,4 +87,8 @@ class _DateOfBirthState extends State<DateOfBirth> {
       ),
     );
   }
+
+  @override
+  // TODO: implement wantKeepAlive
+  bool get wantKeepAlive => true;
 }

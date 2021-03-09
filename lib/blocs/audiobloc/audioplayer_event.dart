@@ -1,19 +1,33 @@
 part of 'audioplayer_bloc.dart';
 
-@immutable
-abstract class AudioplayerEvent {}
+abstract class AudioplayerEvent extends Equatable {}
 
-class InitializePlayer extends AudioplayerEvent {}
-
-class PlayPlayer extends AudioplayerEvent {
-  final String id;
-  final String url;
-
-  const PlayPlayer({Key key, this.url, this.id}) : super(key: key);
+//----initializing the player
+class InitPlayer extends AudioplayerEvent {
+  @override
+  List<Object> get props => [];
 }
 
-class PausePlayer extends AudioplayerEvent {}
+//----event for start player
+class StartPlayer extends AudioplayerEvent {
+  @override
+  List<Object> get props => [];
+}
 
-class ResumePlayer extends AudioplayerEvent {}
+//----event for Pause player
+class PausePlayer extends AudioplayerEvent {
+  @override
+  List<Object> get props => [];
+}
 
-class ClearPlayer extends AudioplayerEvent {}
+//----event for Stop player
+class StopPlayer extends AudioplayerEvent {
+  @override
+  List<Object> get props => [];
+}
+
+//----event for Completed
+class CompletePlayer extends AudioplayerEvent {
+  @override
+  List<Object> get props => [];
+}
