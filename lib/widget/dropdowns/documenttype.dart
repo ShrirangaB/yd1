@@ -76,7 +76,8 @@ class _DocumentState extends State<DocumentDropDown>
         onChanged: (value) {
           setState(() {
             externalDocumentTypesList = value;
-            print('externalDocumentTypesList' + "$externalDocumentTypesList");
+            print(value);
+            print('externalDocumentTypesList: $externalDocumentTypesList');
           });
         },
       ),

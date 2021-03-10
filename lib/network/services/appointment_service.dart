@@ -1,10 +1,13 @@
 import 'dart:convert';
 import 'package:YOURDRS_FlutterAPP/common/app_strings.dart';
-import 'package:YOURDRS_FlutterAPP/network/models/appointment.dart';
+
 import 'package:YOURDRS_FlutterAPP/network/models/appointment_type.dart';
 import 'package:YOURDRS_FlutterAPP/network/models/document_type.dart';
-import 'package:YOURDRS_FlutterAPP/network/models/location.dart';
-import 'package:YOURDRS_FlutterAPP/network/models/provider.dart';
+
+import 'package:YOURDRS_FlutterAPP/network/models/location_field_model.dart';
+import 'package:YOURDRS_FlutterAPP/network/models/practice.dart';
+import 'package:YOURDRS_FlutterAPP/network/models/provider_model.dart';
+
 import 'package:http/http.dart' as http;
 
 class Services {
@@ -138,6 +141,127 @@ class Services {
         AppointmentType.fromJson(json.decode(responsebody));
     return appointment;
   }
+
+  ///------------Practice service method
+
+  Future<Practices> getPratices() async {
+    try {
+      var endpointUrl = ApiUrlConstants.getPractices;
+      Map<String, String> queryParams = {
+        'LoggedInMemberId': '1',
+      };
+      String queryString = Uri(queryParameters: queryParams).query;
+      var requestUrl = endpointUrl + '?' + queryString;
+      final response = await http.get(Uri.encodeFull(requestUrl),
+          headers: {"Accept": "application/json"});
+      if (response.statusCode == 200) {
+        Practices practice = parsePractices(response.body);
+        // print(data);
+        return practice;
+      } else {
+        throw Exception("Error");
+      }
+    } catch (e) {
+      throw Exception(e.toString());
+    }
+  }
+
+  static Practices parsePractices(String responseBody) {
+    final Practices practice = Practices.fromJson(json.decode(responseBody));
+    return practice;
+  }
+
+  ///-------------Location service method
+  Future<ExternalLocation> getExternalLocation(String PracticeIdList) async {
+    try {
+      var endpointUrl = ApiUrlConstants.getExternalLocation;
+      Map<String, String> queryParams = {
+        'LoggedInMemberId': '1',
+        'PracticeIdList': '$PracticeIdList',
+      };
+      String queryString = Uri(queryParameters: queryParams).query;
+      var requestUrl = endpointUrl + '?' + queryString;
+      final response = await http.get(Uri.encodeFull(requestUrl),
+          headers: {"Accept": "application/json"});
+      if (response.statusCode == 200) {
+        ExternalLocation externalLocation =
+            parseExternalLocation(response.body);
+        // print(data);
+        return externalLocation;
+      } else {
+        throw Exception("Error");
+      }
+    } catch (e) {
+      throw Exception(e.toString());
+    }
+  }
+
+  static ExternalLocation parseExternalLocation(String responseBody) {
+    final ExternalLocation externalLocation =
+        ExternalLocation.fromJson(json.decode(responseBody));
+    return externalLocation;
+  }
+
+  //------------------Providers service
+  Future<ExternalProvider> getExternalProvider(
+      String PracticeLocationId) async {
+    try {
+      var endpointUrl = ApiUrlConstants.getProvidersforSelectedPracticeLocation;
+      Map<String, String> queryParams = {
+        'LoggedInMemberId': '1',
+        'PracticeLocationId': '$PracticeLocationId',
+      };
+      String queryString = Uri(queryParameters: queryParams).query;
+      var requestUrl = endpointUrl + '?' + queryString;
+      final response = await http.get(Uri.encodeFull(requestUrl),
+          headers: {"Accept": "application/json"});
+      if (response.statusCode == 200) {
+        ExternalProvider externalProvider =
+            parseExternalProvider(response.body);
+// print(data);
+        return externalProvider;
+      } else {
+        throw Exception("Error");
+      }
+    } catch (e) {
+      throw Exception(e.toString());
+    }
+  }
+
+  static ExternalProvider parseExternalProvider(String responseBody) {
+    final ExternalProvider externalProvider =
+        ExternalProvider.fromJson(json.decode(responseBody));
+    return externalProvider;
+  }
+  // Future<ExternalLocation> getExternalLocation(String PracticeIdList) async {
+  //   try {
+  //     var endpointUrl = ApiUrlConstants.getExternalLocation;
+  //     Map<String, String> queryParams = {
+  //       'LoggedInMemberId': '1',
+  //       'PracticeIdList': '$PracticeIdList',
+  //     };
+  //     String queryString = Uri(queryParameters: queryParams).query;
+  //     var requestUrl = endpointUrl + '?' + queryString;
+  //     final response = await http.get(Uri.encodeFull(requestUrl),
+  //         headers: {"Accept": "application/json"});
+  //     if (response.statusCode == 200) {
+  //       ExternalLocation externalLocation =
+  //           parseExternalLocation(response.body);
+  //       // print(data);
+  //       return externalLocation;
+  //     } else {
+  //       throw Exception("Error");
+  //     }
+  //   } catch (e) {
+  //     throw Exception(e.toString());
+  //   }
+  // }
+
+  // static ExternalLocation parseExternalLocation(String responseBody) {
+  //   final ExternalLocation externalLocation =
+  //       ExternalLocation.fromJson(json.decode(responseBody));
+  //   return externalLocation;
+  // }
 
   // postApiMethod() async {
   //   String apiUrl = ApiUrlConstants.getSchedules;

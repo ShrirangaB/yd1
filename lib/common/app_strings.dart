@@ -44,6 +44,17 @@ class ApiUrlConstants {
   //for document type
   static const getDocumenttype =
       AppConstants.dioBaseUrl + "api/MasterData/GetExternalDocumentTypes";
+  //for appointment type
   static const getAppointmenttype =
       AppConstants.dioBaseUrl + "api/MasterData/GetAppointmentTypes";
+  //for selecting practices
+  static const getPractices =
+      AppConstants.dioBaseUrl + "api/MasterData/GetLoggedInMemberPractices";
+  //location for selected practices
+  static const getExternalLocation = AppConstants.dioBaseUrl +
+      "api/MasterData/GetLocationsForSelectedPractices";
+  //providers for selected location practices type
+  static const getProvidersforSelectedPracticeLocation =
+      AppConstants.dioBaseUrl +
+          "api/MasterData/GetProvidersForSelectedPracticeLocation";
 }

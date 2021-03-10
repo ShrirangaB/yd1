@@ -1,10 +1,10 @@
-class Provider {
+class ExternalProvider {
   Header header;
   List<ProviderList> providerList;
 
-  Provider({this.header, this.providerList});
+  ExternalProvider({this.header, this.providerList});
 
-  Provider.fromJson(Map<String, dynamic> json) {
+  ExternalProvider.fromJson(Map<String, dynamic> json) {
     header =
         json['header'] != null ? new Header.fromJson(json['header']) : null;
     if (json['providerList'] != null) {

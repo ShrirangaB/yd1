@@ -66,4 +66,9 @@ class ExternalDocumentTypesList {
     data['externalDocumentTypeName'] = this.externalDocumentTypeName;
     return data;
   }
+
+  @override
+  String toString() {
+    return '$id';
+  }
 }
