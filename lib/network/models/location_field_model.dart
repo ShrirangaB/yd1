@@ -174,6 +174,6 @@ class LocationList {
 
   @override
   String toString() {
-    return 'PracticeList{name: $name,id: $id}';
+    return 'PracticeList{name: $name,id: $id';
   }
 }

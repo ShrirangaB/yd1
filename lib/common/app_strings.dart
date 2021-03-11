@@ -29,6 +29,9 @@ class AppStrings {
   static const dialogSubmit = 'Submit';
   static const dialogCancel = 'Cancel';
   static const dateFormatr = 'yMd';
+  static const textDictation = 'ALL dictation';
+  static const textUploaded = 'upload';
+  static const uploadedTextColor = 'upload';
 }
 
 class ApiUrlConstants {
@@ -57,4 +60,6 @@ class ApiUrlConstants {
   static const getProvidersforSelectedPracticeLocation =
       AppConstants.dioBaseUrl +
           "api/MasterData/GetProvidersForSelectedPracticeLocation";
+  static const dictations =
+      AppConstants.dioBaseUrl + "api/Dictation/GetAllDictations";
 }

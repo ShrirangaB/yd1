@@ -35,7 +35,7 @@ class RaisedButtonCustom extends StatelessWidget {
     return RaisedButton(
       color: CustomizedColors.raisedbuttonColor,
       child: Container(
-        width: MediaQuery.of(context).size.width * 0.45,
+        width: MediaQuery.of(context).size.width * 0.95,
         padding: EdgeInsets.all(18.0),
         child: Text(
           text,

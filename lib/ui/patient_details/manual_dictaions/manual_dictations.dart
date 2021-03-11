@@ -13,6 +13,7 @@ class _ManualDictationsState extends State<ManualDictations> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       home: Scaffold(
         appBar: AppBar(
           backgroundColor: CustomizedColors.primaryColor,

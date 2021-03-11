@@ -15,13 +15,19 @@ class Locations extends StatefulWidget {
   _LocationsState createState() => _LocationsState();
 }
 
-class _LocationsState extends State<Locations> {
+class _LocationsState extends State<Locations>
+    with AutomaticKeepAliveClientMixin {
   bool asTabs = false;
   Services apiServices = Services();
   LocationList locationsList;
+  var _currentSelectedValue;
   //List<LocationList> _list=[];
   List data = List();
   String practiceId;
+  void initState() {
+    super.initState();
+    _currentSelectedValue = widget.PracticeIdList;
+  }
 
   @override
   void didChangeDependencies() async {
@@ -63,34 +69,43 @@ class _LocationsState extends State<Locations> {
 
     //print('build PracticeIdList ${widget.PracticeIdList}');
     return Container(
-        // alignment: Alignment.center,
-        // padding: const EdgeInsets.all(10),
-        //height: MediaQuery.of(context).size.height * 0.07,
-        width: MediaQuery.of(context).size.width * 0.86,
-        child: SearchableDropdown.single(
-          items: data.map((item) {
-            return DropdownMenuItem<LocationList>(
-                child: Text(
-                  item.name,
-                  overflow: TextOverflow.ellipsis,
-                ),
-                value: item);
-          }).toList(),
-          isExpanded: true,
-          value: locationsList,
-          searchHint: new Text('Select ', style: new TextStyle(fontSize: 20)),
-          onChanged: (value) {
-            setState(() {
-              locationsList = value;
-              print('locationsList $locationsList');
-            });
-          },
+      // alignment: Alignment.center,
+      // padding: const EdgeInsets.all(10),
+      //height: MediaQuery.of(context).size.height * 0.07,
+      width: MediaQuery.of(context).size.width * 0.95,
+      child: SearchableDropdown.single(
+        underline: Padding(padding: EdgeInsets.all(1)),
+        displayClearIcon: false,
+        items: data.map((item) {
+          return DropdownMenuItem<LocationList>(
+              child: Text(
+                item.name ?? "",
+                overflow: TextOverflow.ellipsis,
+              ),
+              value: item);
+        }).toList(),
+        isExpanded: true,
+        value: locationsList,
+        searchHint: Text('Select ', style: TextStyle(fontSize: 20)),
+        onChanged: (value) {
+          setState(() {
+            _currentSelectedValue = value;
+            widget.onTapOfLocation(value);
+            // locationsList=value;
+            // print('locationsList $locationsList');
+          });
+        },
+      ),
+      decoration: BoxDecoration(
+        border: Border.all(
+          color: CustomizedColors.accentColor,
         ),
-        decoration: BoxDecoration(
-          border: Border.all(
-            color: Colors.black38,
-          ),
-          borderRadius: BorderRadius.circular(6),
-        ));
+        borderRadius: BorderRadius.circular(6),
+      ),
+    );
   }
+
+  @override
+  // TODO: implement wantKeepAlive
+  bool get wantKeepAlive => true;
 }

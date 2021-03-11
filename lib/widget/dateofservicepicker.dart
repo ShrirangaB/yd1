@@ -32,56 +32,53 @@ class _DateOfServiceState extends State<DateOfService>
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(10),
-      child: Material(
-        child: Center(
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: <Widget>[
-              Container(
-                width: MediaQuery.of(context).size.width * 0.80,
-                decoration: const BoxDecoration(
-                    border: Border(
-                      top: BorderSide(
-                          width: 1.0, color: CustomizedColors.accentColor),
-                      left: BorderSide(
-                          width: 1.0, color: CustomizedColors.accentColor),
-                      right: BorderSide(
-                          width: 1.0, color: CustomizedColors.accentColor),
-                      bottom: BorderSide(
-                          width: 1.0, color: CustomizedColors.accentColor),
-                    ),
-                    borderRadius: BorderRadius.all(Radius.circular(5))),
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      InkWell(
-                        child: Text(_serviceDate,
-                            textAlign: TextAlign.center,
-                            style:
-                                TextStyle(color: CustomizedColors.accentColor)),
-                        onTap: () {
-                          _selectDate(context);
-                        },
-                      ),
-                      IconButton(
-                        icon: Icon(
-                          Icons.calendar_today_sharp,
-                          color: CustomizedColors.accentColor,
-                        ),
-                        onPressed: () {
-                          _selectDate(context);
-                        },
-                      ),
-                    ],
+    return Material(
+      child: Center(
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: <Widget>[
+            Container(
+              width: MediaQuery.of(context).size.width * 0.935,
+              decoration: const BoxDecoration(
+                  border: Border(
+                    top: BorderSide(
+                        width: 1.0, color: CustomizedColors.accentColor),
+                    left: BorderSide(
+                        width: 1.0, color: CustomizedColors.accentColor),
+                    right: BorderSide(
+                        width: 1.0, color: CustomizedColors.accentColor),
+                    bottom: BorderSide(
+                        width: 1.0, color: CustomizedColors.accentColor),
                   ),
+                  borderRadius: BorderRadius.all(Radius.circular(5))),
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    InkWell(
+                      child: Text(_serviceDate,
+                          textAlign: TextAlign.center,
+                          style:
+                              TextStyle(color: CustomizedColors.accentColor)),
+                      onTap: () {
+                        _selectDate(context);
+                      },
+                    ),
+                    IconButton(
+                      icon: Icon(
+                        Icons.calendar_today_sharp,
+                        color: CustomizedColors.accentColor,
+                      ),
+                      onPressed: () {
+                        _selectDate(context);
+                      },
+                    ),
+                  ],
                 ),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

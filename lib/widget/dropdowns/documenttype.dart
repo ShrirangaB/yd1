@@ -47,18 +47,19 @@ class _DocumentState extends State<DocumentDropDown>
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        border: Border.all(width: 2, color: CustomizedColors.accentColor),
+        border: Border.all(
+          color: CustomizedColors.accentColor,
+        ),
+        borderRadius: BorderRadius.circular(6),
       ),
       alignment: Alignment.center,
       padding: const EdgeInsets.all(10),
-      width: 320,
+      width: MediaQuery.of(context).size.width * 0.95,
       child: SearchableDropdown.single(
-        validator: (value) => value == null ? 'Cannot be empty' : null,
+        displayClearIcon: false,
+        //validator: (value) => value == null ? 'Cannot be empty' : null,
         hint: Text('Document Type'),
-        // label: Text('',style: TextStyle(
-        //     fontSize: 16,fontWeight: FontWeight.bold,
-        //     color: Colors.black
-        // ),),
+
         items: data.map((item) {
           return DropdownMenuItem<ExternalDocumentTypesList>(
               child: Text(

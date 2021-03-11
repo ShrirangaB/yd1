@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:YOURDRS_FlutterAPP/common/app_strings.dart';
 
 import 'package:YOURDRS_FlutterAPP/network/models/appointment_type.dart';
+import 'package:YOURDRS_FlutterAPP/network/models/dictations_model.dart';
 import 'package:YOURDRS_FlutterAPP/network/models/document_type.dart';
 
 import 'package:YOURDRS_FlutterAPP/network/models/location_field_model.dart';
@@ -205,27 +206,33 @@ class Services {
   //------------------Providers service
   Future<ExternalProvider> getExternalProvider(
       String PracticeLocationId) async {
-    try {
-      var endpointUrl = ApiUrlConstants.getProvidersforSelectedPracticeLocation;
-      Map<String, String> queryParams = {
-        'LoggedInMemberId': '1',
-        'PracticeLocationId': '$PracticeLocationId',
-      };
-      String queryString = Uri(queryParameters: queryParams).query;
-      var requestUrl = endpointUrl + '?' + queryString;
-      final response = await http.get(Uri.encodeFull(requestUrl),
-          headers: {"Accept": "application/json"});
-      if (response.statusCode == 200) {
-        ExternalProvider externalProvider =
-            parseExternalProvider(response.body);
-// print(data);
-        return externalProvider;
-      } else {
-        throw Exception("Error");
+    print('getExternalProvider PracticeLocationId $PracticeLocationId');
+    if (PracticeLocationId != null) {
+      try {
+        var endpointUrl =
+            ApiUrlConstants.getProvidersforSelectedPracticeLocation;
+        Map<String, String> queryParams = {
+          'LoggedInMemberId': '1',
+          'PracticeLocationId': '$PracticeLocationId',
+        };
+        String queryString = Uri(queryParameters: queryParams).query;
+        var requestUrl = endpointUrl + '?' + queryString;
+        final response = await http.get(Uri.encodeFull(requestUrl),
+            headers: {"Accept": "application/json"});
+        if (response.statusCode == 200) {
+          ExternalProvider externalProvider =
+              parseExternalProvider(response.body);
+          // print(data);
+          return externalProvider;
+        } else {
+          throw Exception("Error");
+        }
+      } catch (e) {
+        throw Exception(e.toString());
       }
-    } catch (e) {
-      throw Exception(e.toString());
     }
+
+    return null;
   }
 
   static ExternalProvider parseExternalProvider(String responseBody) {
@@ -233,6 +240,42 @@ class Services {
         ExternalProvider.fromJson(json.decode(responseBody));
     return externalProvider;
   }
+
+  /// Get all dictations api service class
+  ///
+  Future<Dictations> getDictations() async {
+    try {
+      var endpointUrl = ApiUrlConstants.dictations;
+      Map<String, dynamic> queryParams = {
+        'TranscriptionId': '25',
+        'AppointmentId': '12',
+      };
+
+      String queryString = Uri(queryParameters: queryParams).query;
+      var requestUrl = endpointUrl + '?' + queryString;
+      print('requestUrl $requestUrl');
+
+      final response = await http.get(Uri.encodeFull(requestUrl),
+          headers: {"Accept": "application/json"});
+      print('response' + response.body);
+
+      if (response.statusCode == 200) {
+        Dictations allDictations = parseAllDictations(response.body);
+        print('dictations-- $allDictations');
+        return allDictations;
+      }
+    } catch (e) {
+      print(e.toString());
+    }
+  }
+
+  static Dictations parseAllDictations(String responseBody) {
+    final Dictations allDictations =
+        Dictations.fromJson(json.decode(responseBody));
+    print(allDictations);
+    return allDictations;
+  }
+
   // Future<ExternalLocation> getExternalLocation(String PracticeIdList) async {
   //   try {
   //     var endpointUrl = ApiUrlConstants.getExternalLocation;

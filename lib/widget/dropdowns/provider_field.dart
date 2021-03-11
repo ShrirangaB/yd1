@@ -1,3 +1,4 @@
+import 'package:YOURDRS_FlutterAPP/common/app_colors.dart';
 import 'package:YOURDRS_FlutterAPP/network/models/provider_model.dart';
 import 'package:YOURDRS_FlutterAPP/network/services/appointment_service.dart';
 import 'package:flutter/material.dart';
@@ -19,7 +20,7 @@ class _ExternalProviderDropDownState extends State<ExternalProviderDropDown>
   bool asTabs = false;
   Services apiServices = Services();
   ProviderList providerList;
-//List<LocationList> _list=[];
+  //List<LocationList> _list=[];
   List data = List();
   String locationId;
 
@@ -31,13 +32,13 @@ class _ExternalProviderDropDownState extends State<ExternalProviderDropDown>
   @override
   void didChangeDependencies() async {
     super.didChangeDependencies();
-    // print(
-    //     'didChangeDependencies PracticeLocationId ${widget.PracticeLocationId}');
-// ExternalProvider externalProvider = await apiServices.getExternalProvider();
-// data = externalProvider.providerList;
+    print(
+        'didChangeDependencies PracticeLocationId ${widget.PracticeLocationId}');
+    // ExternalProvider externalProvider = await apiServices.getExternalProvider();
+    // data = externalProvider.providerList;
 
 //_currentSelectedValue=data;
-// setState(() {});
+//     setState(() {});
   }
 
   List<Widget> get appBarActions {
@@ -62,47 +63,51 @@ class _ExternalProviderDropDownState extends State<ExternalProviderDropDown>
             locationId != widget.PracticeLocationId)) {
       locationId = widget.PracticeLocationId;
       apiServices.getExternalProvider(locationId).then((value) {
-        data = value.providerList;
-        setState(() {});
+        if (value != null) {
+          data = value.providerList;
+          setState(() {});
+        }
       });
     }
-
+    print('build PracticeLocationId ${widget.PracticeLocationId}');
     return Container(
-//height: 55,
-//color: Colors.yellow,
-//height: MediaQuery.of(context).size.height * 0.07,
-//alignment: Alignment.center,
-//padding: const EdgeInsets.all(10),
-      width: MediaQuery.of(context).size.width * 0.86,
+      //height: 55,
+      //color: Colors.yellow,
+      //height: MediaQuery.of(context).size.height * 0.07,
+      //alignment: Alignment.center,
+      //padding: const EdgeInsets.all(10),
+      width: MediaQuery.of(context).size.width * 0.95,
       child: SearchableDropdown.single(
+        underline: Padding(padding: EdgeInsets.all(1)),
+        displayClearIcon: false,
         hint: Text('Select'),
-// label: Text('Location',style: TextStyle(
-// fontSize: 16,fontWeight: FontWeight.bold,
-// color: Colors.black
-// ),),
+        // label: Text('Location',style: TextStyle(
+        //     fontSize: 16,fontWeight: FontWeight.bold,
+        //     color: Colors.black
+        // ),),
         items: data.map((item) {
           return DropdownMenuItem<ProviderList>(
               child: Text(
-                item.displayname,
+                item.displayname ?? "",
                 overflow: TextOverflow.ellipsis,
               ),
               value: item);
         }).toList(),
         isExpanded: true,
         value: providerList,
-        searchHint: Text('Select ', style: TextStyle(fontSize: 20)),
+        searchHint: new Text('Select ', style: new TextStyle(fontSize: 20)),
         onChanged: (value) {
           setState(() {
             _currentSelectedValue = value;
             widget.onTapOfProvider(value);
-            providerList = value;
-            print('practiceList $providerList');
+            // providerList=value;
+            // print('practiceList $providerList');
           });
         },
       ),
       decoration: BoxDecoration(
         border: Border.all(
-          color: Colors.black38,
+          color: CustomizedColors.accentColor,
         ),
         borderRadius: BorderRadius.circular(6),
       ),

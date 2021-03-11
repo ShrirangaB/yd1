@@ -1,9 +1,7 @@
 import 'package:YOURDRS_FlutterAPP/common/app_colors.dart';
 import 'package:YOURDRS_FlutterAPP/common/app_strings.dart';
 import 'package:YOURDRS_FlutterAPP/network/models/practice.dart';
-
 import 'package:flutter/material.dart';
-
 import 'package:YOURDRS_FlutterAPP/network/services/appointment_service.dart';
 import 'package:flutter/material.dart';
 import 'package:searchable_dropdown/searchable_dropdown.dart';
@@ -63,8 +61,10 @@ class _PracticeState extends State<PracticeDropDown>
       //height: MediaQuery.of(context).size.height * 0.07,
       //alignment: Alignment.center,
       //padding: const EdgeInsets.all(10),
-      width: MediaQuery.of(context).size.width * 0.86,
+      width: MediaQuery.of(context).size.width * 0.95,
       child: SearchableDropdown.single(
+        underline: Padding(padding: EdgeInsets.all(1)),
+        displayClearIcon: false,
         hint: Text('Select'),
         // label: Text('Location',style: TextStyle(
         //     fontSize: 16,fontWeight: FontWeight.bold,
@@ -73,7 +73,7 @@ class _PracticeState extends State<PracticeDropDown>
         items: data.map((item) {
           return DropdownMenuItem<PracticeList>(
               child: Text(
-                item.name,
+                item.name ?? "",
                 overflow: TextOverflow.ellipsis,
               ),
               value: item);
@@ -92,7 +92,7 @@ class _PracticeState extends State<PracticeDropDown>
       ),
       decoration: BoxDecoration(
         border: Border.all(
-          color: Colors.black38,
+          color: CustomizedColors.accentColor,
         ),
         borderRadius: BorderRadius.circular(6),
       ),

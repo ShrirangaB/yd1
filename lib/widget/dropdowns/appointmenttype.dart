@@ -47,13 +47,17 @@ class _AppointmentDropDownState extends State<AppointmentDropDown>
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        border: Border.all(width: 2, color: CustomizedColors.accentColor),
+        border: Border.all(
+          color: CustomizedColors.accentColor,
+        ),
+        borderRadius: BorderRadius.circular(6),
       ),
       alignment: Alignment.center,
       padding: const EdgeInsets.all(10),
-      width: 320,
+      width: MediaQuery.of(context).size.width * 0.95,
       child: SearchableDropdown.single(
-        validator: (value) => value == null ? 'Cannot be empty' : null,
+        displayClearIcon: false,
+        //validator: (value) => value == null ? 'Cannot be empty' : null,
         hint: Text('Appointment Type'),
         // label: Text('',style: TextStyle(
         //     fontSize: 16,fontWeight: FontWeight.bold,
