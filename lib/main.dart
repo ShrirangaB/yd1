@@ -1,4 +1,3 @@
-import 'package:YOURDRS_FlutterAPP/ui/patient_details/manual_dictaions/dictations_lists.dart';
 import 'package:YOURDRS_FlutterAPP/ui/patient_details/manual_dictaions/manual_dictations.dart';
 import 'package:YOURDRS_FlutterAPP/ui/patient_details/manual_dictaions/submit_new_dictation.dart';
 
@@ -20,7 +19,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: DictationsList(),
+      home: ManualDictations(),
     );
   }
 }

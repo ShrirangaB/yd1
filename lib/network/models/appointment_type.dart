@@ -109,4 +109,9 @@ class AppointmentTypeList {
     data['shortName'] = this.shortName;
     return data;
   }
+
+  @override
+  String toString() {
+    return '$id';
+  }
 }

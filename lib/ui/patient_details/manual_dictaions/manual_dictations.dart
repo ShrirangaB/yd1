@@ -1,6 +1,6 @@
 import 'package:YOURDRS_FlutterAPP/common/app_colors.dart';
 import 'package:YOURDRS_FlutterAPP/common/app_strings.dart';
-import 'package:YOURDRS_FlutterAPP/ui/patient_details/manual_dictaions/all_dictations.dart';
+import 'package:YOURDRS_FlutterAPP/ui/patient_details/manual_dictaions/dictations_lists.dart';
 import 'package:YOURDRS_FlutterAPP/ui/patient_details/manual_dictaions/submit_new_dictation.dart';
 import 'package:flutter/material.dart';
 

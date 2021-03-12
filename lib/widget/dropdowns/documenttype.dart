@@ -5,6 +5,9 @@ import 'package:YOURDRS_FlutterAPP/network/services/appointment_service.dart';
 import 'package:searchable_dropdown/searchable_dropdown.dart';
 
 class DocumentDropDown extends StatefulWidget {
+  final onTapDocument;
+  String selectedDocumentType;
+  DocumentDropDown({@required this.onTapDocument, this.selectedDocumentType});
   @override
   _DocumentState createState() => _DocumentState();
 }
@@ -12,6 +15,7 @@ class DocumentDropDown extends StatefulWidget {
 class _DocumentState extends State<DocumentDropDown>
     with AutomaticKeepAliveClientMixin {
   bool asTabs = false;
+  var _currSelectedDoc;
   //------------------service
   Services apiServices = Services();
   ExternalDocumentTypesList externalDocumentTypesList;
@@ -26,6 +30,12 @@ class _DocumentState extends State<DocumentDropDown>
 
 //_currentSelectedValue=data;
     setState(() {});
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _currSelectedDoc = widget.selectedDocumentType;
   }
 
   List<Widget> get appBarActions {
@@ -78,7 +88,10 @@ class _DocumentState extends State<DocumentDropDown>
           setState(() {
             externalDocumentTypesList = value;
             print(value);
+
             print('externalDocumentTypesList: $externalDocumentTypesList');
+
+            widget.onTapDocument(value);
           });
         },
       ),

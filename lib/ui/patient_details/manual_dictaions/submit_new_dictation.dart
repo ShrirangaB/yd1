@@ -1,8 +1,10 @@
-import 'dart:ffi';
-
+// import 'dart:ffi';
 import 'package:YOURDRS_FlutterAPP/common/app_colors.dart';
 import 'package:YOURDRS_FlutterAPP/common/app_strings.dart';
-
+import 'package:YOURDRS_FlutterAPP/helper/db_helper.dart';
+import 'package:YOURDRS_FlutterAPP/network/models/appointment_type.dart';
+import 'package:YOURDRS_FlutterAPP/network/models/dictation.dart';
+import 'package:YOURDRS_FlutterAPP/network/models/document_type.dart';
 import 'package:YOURDRS_FlutterAPP/network/models/location_field_model.dart';
 import 'package:YOURDRS_FlutterAPP/network/models/practice.dart';
 import 'package:YOURDRS_FlutterAPP/network/models/provider_model.dart';
@@ -12,7 +14,6 @@ import 'package:YOURDRS_FlutterAPP/widget/dateofbirthpicker.dart';
 import 'package:YOURDRS_FlutterAPP/widget/dateofservicepicker.dart';
 import 'package:YOURDRS_FlutterAPP/widget/dropdowns/appointmenttype.dart';
 import 'package:YOURDRS_FlutterAPP/widget/dropdowns/documenttype.dart';
-
 import 'package:YOURDRS_FlutterAPP/widget/dropdowns/location_field.dart';
 import 'package:YOURDRS_FlutterAPP/widget/dropdowns/practice_field.dart';
 import 'package:YOURDRS_FlutterAPP/widget/dropdowns/provider_field.dart';
@@ -31,15 +32,19 @@ class _SubmitNewDictationState extends State<SubmitNewDictation>
   final _fName = TextEditingController();
   final _lName = TextEditingController();
   final _descreiption = TextEditingController();
-  String _selectedLocation;
-  String _selectedPractice;
+  String _selectedLocationName;
+  String _selectedPracticeName;
+  String _selectedProviderName;
+  String _selectedPracticeId;
+  String _selectedLocationId;
   String _selectedProvider;
-  // var _currentSelectedValue;
+  int _selectedDoc;
+  String _selectedDocName;
+  int _selectedAppointment;
+  String _selectedAppointmentName;
   String currentDOB;
   String currentDOS;
-  String toggleVal;
-  // String currentPractice;
-  String selectedDocumentType;
+  bool toggleVal;
 
   List<bool> _isSelected = [true, false];
 
@@ -76,7 +81,8 @@ class _SubmitNewDictationState extends State<SubmitNewDictation>
                 PracticeDropDown(
                   onTapOfPractice: (PracticeList pValue) {
                     setState(() {
-                      _selectedPractice = '${pValue?.id}';
+                      _selectedPracticeId = '${pValue?.id}';
+                      _selectedPracticeName = pValue.name;
 
                       print('Practice from UI: ${pValue?.id}');
                     });
@@ -95,14 +101,15 @@ class _SubmitNewDictationState extends State<SubmitNewDictation>
 
 //------Location drop down
                 Locations(
-                  onTapOfLocation: (LocationList value) {
+                  onTapOfLocation: (LocationList value) async {
                     setState(() {
-                      _selectedLocation = '${value?.id}';
+                      _selectedLocationId = '${value?.id}';
                     });
+                    _selectedLocationName = value.name;
 
-                    print('Location from UI: $_selectedLocation');
+                    print('Location from UI: $_selectedLocationId');
                   },
-                  PracticeIdList: _selectedPractice,
+                  PracticeIdList: _selectedPracticeId,
                 ),
 
                 SizedBox(height: 15),
@@ -118,12 +125,13 @@ class _SubmitNewDictationState extends State<SubmitNewDictation>
 
 //------Provider drop down
                 ExternalProviderDropDown(
-                  onTapOfProvider: (ProviderList value) {
+                  onTapOfProvider: (ProviderList value) async {
                     _selectedProvider = '${value?.providerId}';
+                    _selectedProviderName = value.displayname;
 
                     print('Provider from UI: $_selectedProvider');
                   },
-                  PracticeLocationId: _selectedLocation,
+                  PracticeLocationId: _selectedLocationId,
                 ),
                 SizedBox(height: 15),
 //----------label text
@@ -249,7 +257,14 @@ class _SubmitNewDictationState extends State<SubmitNewDictation>
                   ),
                 ),
                 SizedBox(height: 15),
-                DocumentDropDown(),
+                DocumentDropDown(
+                  onTapDocument: (ExternalDocumentTypesList value) async {
+                    _selectedDoc = value.id;
+                    _selectedDocName = value.externalDocumentTypeName;
+                    print('from UI documenrt: $value');
+                  },
+                  //  selectedDocumentType: null,
+                ),
 
                 SizedBox(height: 15),
                 //----------------text for appointment type
@@ -262,7 +277,14 @@ class _SubmitNewDictationState extends State<SubmitNewDictation>
                 ),
                 SizedBox(height: 15),
 //-----------------Appointment type Dropdown
-                AppointmentDropDown(),
+                AppointmentDropDown(
+                  onTapOfAppointment: (AppointmentTypeList value) async {
+                    _selectedAppointment = value.id;
+                    _selectedAppointmentName = value.name;
+                    print('from UI Appointment: $value');
+                  },
+                  //selectedAppointmentType: _selectedAppointment,
+                ),
                 SizedBox(height: 15),
                 Padding(
                   padding: const EdgeInsets.all(5),
@@ -286,14 +308,14 @@ class _SubmitNewDictationState extends State<SubmitNewDictation>
                     activeFgColor: CustomizedColors.whiteColor,
                     inactiveBgColor: Colors.grey[300],
                     inactiveFgColor: Colors.grey[700],
-                    labels: ['YES', 'NO'],
+                    labels: [AppStrings.toggleYES, AppStrings.toggleNO],
                     icons: [Icons.check_circle, Icons.cancel_rounded],
                     onToggle: (toggleIndex) {
                       // print('switched to: $toggleIndex');
                       if (toggleIndex == 0) {
-                        toggleVal = 'YES';
+                        toggleVal = true;
                       } else if (toggleIndex == 1) {
-                        toggleVal = 'NO';
+                        toggleVal = false;
                       } else {
                         return null;
                       }
@@ -431,36 +453,60 @@ class _SubmitNewDictationState extends State<SubmitNewDictation>
 //------raised Button for Submitting
                 RaisedButtonCustom(
                   onPressed: () {
-                    print("$_selectedLocation");
-                    print("$_selectedPractice");
-                    print("$_selectedProvider");
-                    print("$currentDOB");
-                    print("$currentDOS");
-                    print('$toggleVal');
-                    print(_fName.text);
-                    print(_lName.text);
-                    print(_descreiption.text);
+                    // print("location :: $_selectedLocation");
+                    // print("Practice :: $_selectedPractice");
+                    // print("Provider :: $_selectedProvider");
+                    // print("DOB :: $currentDOB");
+                    // print("DOS :: $currentDOS");
+                    // print("Document Type :: $_selectedDoc");
+                    // print("Appointment Type :: $_selectedAppointment");
+                    // print('Emergency :: $toggleVal');
+                    // print('first name ::' + _fName.text);
+                    // print('last name ::' + _lName.text);
+                    // print('description ::' + _descreiption.text);
                     // print("$currentPractice");
                     //  print("$selectedDocumentType");
-                    if (_formKey.currentState.validate()) {
-// If the form is valid, display a snackbar. In the real world,
-// you'd often call a server or save the information in a database.
-                      Scaffold.of(context).showSnackBar(SnackBar(
-                          content: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          CircularProgressIndicator(
-                            backgroundColor: CustomizedColors.whiteColor,
-                            valueColor: AlwaysStoppedAnimation(
-                                CustomizedColors.accentColor),
+
+                    try {
+                      if (_formKey.currentState.validate()) {
+                        Scaffold.of(context).showSnackBar(
+                          SnackBar(
+                            content: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                CircularProgressIndicator(
+                                  backgroundColor: CustomizedColors.whiteColor,
+                                  valueColor: AlwaysStoppedAnimation(
+                                      CustomizedColors.accentColor),
+                                ),
+                                SizedBox(
+                                  width: 15,
+                                ),
+                                Text('Submitting Data'),
+                              ],
+                            ),
                           ),
-                          SizedBox(
-                            width: 15,
-                          ),
-                          Text('Submitting Data'),
-                        ],
-                      )));
-                      _formKey.currentState.save();
+                        );
+                        DatabaseHelper.db.insertAudio(Dictation(
+                          locationName: _selectedLocationName ?? "",
+                          locationId: int.tryParse(_selectedLocationId) ?? "",
+                          practiceName: _selectedPracticeName ?? "",
+                          practiceId: int.tryParse(_selectedPracticeId) ?? "",
+                          providerName: _selectedProviderName ?? "",
+                          providerId: int.tryParse(_selectedProvider) ?? "",
+                          patientFirstName: _fName.text ?? "",
+                          patientLastName: _lName.text ?? "",
+                          patientDOB: currentDOB ?? "",
+                          dos: currentDOS ?? "",
+                          isEmergencyAddOn: toggleVal ?? "",
+                          externalDocumentTypeId: _selectedDoc ?? "",
+                          appointmentTypeId: _selectedAppointment ?? "",
+                          description: _descreiption.text ?? "",
+                        ));
+                      }
+                    } on Exception catch (e) {
+                      print('exception in submit button');
+                      print(e.toString());
                     }
                   },
                   text: AppStrings.submitButtonText,
@@ -485,10 +531,15 @@ class _SubmitNewDictationState extends State<SubmitNewDictation>
   }
 
   String validateInput(String value) {
-    if (value.length == 0) {
-      return 'This is required';
-    } else {
-      return null;
+    try {
+      if (value.length == 0) {
+        return 'This is required';
+      } else {
+        return null;
+      }
+    } on Exception catch (e) {
+      print('exception in validate Input');
+      print(e.toString());
     }
   }
 

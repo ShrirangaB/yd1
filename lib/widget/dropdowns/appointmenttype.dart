@@ -6,12 +6,18 @@ import 'package:YOURDRS_FlutterAPP/network/services/appointment_service.dart';
 import 'package:searchable_dropdown/searchable_dropdown.dart';
 
 class AppointmentDropDown extends StatefulWidget {
+  final onTapOfAppointment;
+  String selectedAppointmentType;
+
+  AppointmentDropDown(
+      {@required this.onTapOfAppointment, this.selectedAppointmentType});
   @override
   _AppointmentDropDownState createState() => _AppointmentDropDownState();
 }
 
 class _AppointmentDropDownState extends State<AppointmentDropDown>
     with AutomaticKeepAliveClientMixin {
+  String _currSelectedAppointent;
   bool asTabs = false;
   Services apiServices = Services();
   AppointmentTypeList appointmentTypeList;
@@ -26,6 +32,12 @@ class _AppointmentDropDownState extends State<AppointmentDropDown>
 
 //_currentSelectedValue=data;
     setState(() {});
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _currSelectedAppointent = widget.selectedAppointmentType;
   }
 
   List<Widget> get appBarActions {
@@ -82,6 +94,7 @@ class _AppointmentDropDownState extends State<AppointmentDropDown>
           setState(() {
             appointmentTypeList = value;
             print('AppointmentTypeList' + "$appointmentTypeList");
+            widget.onTapOfAppointment(value);
           });
         },
       ),
