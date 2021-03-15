@@ -22,9 +22,15 @@ class _AllDictationsState extends State<AllDictations>
   void didChangeDependencies() async {
     super.didChangeDependencies();
     Dictations allDictations = await apiServices.getDictations();
-
-    allDtion = allDictations.audioDictations;
+    setState(() {
+      allDtion = allDictations.audioDictations;
+    });
     print(allDtion.length);
+  }
+
+  @override
+  void initState() {
+    super.initState();
   }
 
   @override
@@ -88,7 +94,38 @@ class _AllDictationsState extends State<AllDictations>
                     IconButton(
                       padding: EdgeInsets.all(0),
                       onPressed: () {
-                        AudioModalBottomSheet();
+                        //AudioModalBottomSheet();
+                        showModalBottomSheet<void>(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return Container(
+                              height: 370,
+                              child: Center(
+                                child: Container(
+                                  height: 320,
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.90,
+                                  child: Column(
+                                    children: [
+                                      AudioApp(),
+                                      MaterialButton(
+                                        child: Text(
+                                          'Cancel',
+                                          style: TextStyle(fontSize: 18),
+                                        ),
+                                        color: CustomizedColors.cameraIconcolor,
+                                        shape: StadiumBorder(),
+                                        onPressed: () {
+                                          Navigator.of(context).pop();
+                                        },
+                                      )
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            );
+                          },
+                        );
                       },
                       icon: Icon(
                         Icons.play_circle_fill,

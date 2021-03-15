@@ -29,4 +29,20 @@ class CustomizedColors {
   static const dialogCancelButton = Colors.grey;
   static const inactiveFgColorCustom = Color.fromRGBO(0, 0, 0, 1);
   static const activeRedColor = Colors.red;
+  //
+  static const waveColor = Color.fromRGBO(30, 82, 163, 1);
+  static const iconColors = Color.fromRGBO(85, 85, 85, 1);
+  static const playPauseIconColor = Colors.white;
+  static const micIconColor = Colors.white;
+  static const circleAvatarBgColor = Colors.white;
+  static const alertColor = Color.fromRGBO(92, 136, 217, 1);
+  static const textColor = Colors.white;
+  static const alertCancelColor = Color.fromRGBO(230, 27, 35, 1);
+  static const deleteIconColor = Color.fromRGBO(230, 27, 35, 1);
+  static const saveLaterColor = Color.fromRGBO(30, 82, 163, 1);
+  static const switchButtonColor = Color.fromRGBO(30, 82, 163, 1);
+  static const cloudIconColor = Color.fromRGBO(30, 82, 163, 1);
+  static const circleAvatarColor = Color.fromRGBO(30, 82, 163, 1);
+  static final waveBGColor = Colors.lightBlue[50];
+  static const toastColor = Color.fromRGBO(30, 82, 163, 1);
 }

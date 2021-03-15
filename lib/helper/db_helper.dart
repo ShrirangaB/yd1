@@ -37,7 +37,7 @@ class DatabaseHelper {
   }
 
   // Insert Audio and Manual dictation
-  insertAudio(Dictation newAudio) async {
+  insertAudio(PatientDictation newAudio) async {
     // await deleteAllAudios();
 
     var db = await database;
@@ -127,7 +127,7 @@ class DatabaseHelper {
 
     //exception handling
     try {
-      var externalPhoroList = await db.insert(AppStrings.dbTablePhotoList, {
+      var externalPhotoList = await db.insert(AppStrings.dbTablePhotoList, {
         AppStrings.col_PhotoList_Id: photoList.id,
         AppStrings.col_PhotoListDictationId: photoList.dictationLocalId,
         AppStrings.col_PhotoListExternalAttachmentId:
@@ -142,7 +142,7 @@ class DatabaseHelper {
             photoList.physicalfilename,
         AppStrings.col_PhotoListAttachmentCreatedDate: photoList.createddate
       });
-      return externalPhoroList;
+      return externalPhotoList;
     } catch (e) {
       print(e.toString());
     }
@@ -183,7 +183,7 @@ class DatabaseHelper {
   // }
 
   //Fetch all the records
-  Future<List<Dictation>> getAllDictations() async {
+  Future<List<PatientDictation>> getAllDictations() async {
     var db = await database;
     // final res = await db.rawQuery("SELECT * FROM EMPLOYEE");
 
@@ -193,11 +193,11 @@ class DatabaseHelper {
 
       // print('data is saving $res');
 
-      List<Dictation> list = res.isNotEmpty
+      List<PatientDictation> list = res.isNotEmpty
           ? res.map((c) {
               print('res.map $c');
 
-              var user = Dictation.fromMap(c);
+              var user = PatientDictation.fromMap(c);
               return user;
             }).toList()
           : [];

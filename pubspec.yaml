@@ -55,6 +55,14 @@ dependencies:
   searchable_dropdown: ^1.1.3  
   #sqflite
   sqflite: ^1.3.2+3
+  #flutter audio recorder
+  flutter_audio_recorder: ^0.5.5
+  #rFlutter
+  rflutter_alert: ^1.0.3
+  # to show to message while recording the audio
+  fluttertoast: ^7.1.8
+  #audio wave
+  audio_wave: ^0.0.3
 
 dev_dependencies:
   flutter_test:

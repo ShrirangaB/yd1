@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class AppConstants {
+  static const dateFormat = "yyyyMMdd_hhmmss";
   static bool enableCrashlytics = true;
 
   static const emailPattern =

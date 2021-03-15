@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:YOURDRS_FlutterAPP/widget/audioplayer/audioplayerr.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 
@@ -37,21 +38,29 @@ class AudioplayerBloc extends Bloc<AudioplayerEvent, AudioplayerState> {
 
   //stream for init
   Stream<AudioplayerState> _initAudioPlayer() async* {
-    try {} catch (e) {}
+    try {} catch (e) {
+      print(e.toString());
+    }
   }
 
   //stream for playing audio
   Stream<AudioplayerState> _play() async* {
-    try {} catch (e) {}
+    try {} catch (e) {
+      print(e.toString());
+    }
   }
 
   //stream for pause
   Stream<AudioplayerState> _pause() async* {
-    try {} catch (e) {}
+    try {} catch (e) {
+      print(e.toString());
+    }
   }
 
   //stream for stop
   Stream<AudioplayerState> _stop() async* {
-    try {} catch (e) {}
+    try {} catch (e) {
+      print(e.toString());
+    }
   }
 }

@@ -8,6 +8,7 @@ import 'package:YOURDRS_FlutterAPP/network/models/document_type.dart';
 import 'package:YOURDRS_FlutterAPP/network/models/location_field_model.dart';
 import 'package:YOURDRS_FlutterAPP/network/models/practice.dart';
 import 'package:YOURDRS_FlutterAPP/network/models/provider_model.dart';
+import 'package:YOURDRS_FlutterAPP/widget/buttons/mic_button.dart';
 import 'package:YOURDRS_FlutterAPP/widget/buttons/raised_buttons.dart';
 import 'package:YOURDRS_FlutterAPP/widget/cupertino_action_sheet.dart';
 import 'package:YOURDRS_FlutterAPP/widget/dateofbirthpicker.dart';
@@ -368,84 +369,81 @@ class _SubmitNewDictationState extends State<SubmitNewDictation>
                   onPressed: () {
 //---------Dialog box for Recorder
                     showDialog(
-                        context: context,
-                        builder: (ctxt) => AlertDialog(
-                              title: Center(
-                                  child: Text(AppStrings.alertDialogDictation)),
-                              content: Container(
-                                height: 160,
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
+                      context: context,
+                      builder: (ctxt) => AlertDialog(
+                        title: Center(
+                            child: Text(AppStrings.alertDialogDictation)),
+                        content: Container(
+                          height: 160,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
 //-----------------material button for audio Recorder
-                                    MaterialButton(
-                                      onPressed: () {},
-                                      shape: CircleBorder(),
-                                      child: Icon(
-                                        Icons.play_circle_outline,
-                                        size: 65,
-                                        color: CustomizedColors.accentColor,
+                              // MaterialButton(
+                              //   onPressed: () {},
+                              //   shape: CircleBorder(),
+                              //   child: Icon(
+                              //     Icons.play_circle_outline,
+                              //     size: 65,
+                              //     color: CustomizedColors.accentColor,
+                              //   ),
+                              // ),
+                              MicButton(),
+                              Padding(
+                                padding: const EdgeInsets.all(11),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+//-----------------material button inside dialog box
+                                    Container(
+                                      height: 45,
+                                      width: 98,
+                                      child: MaterialButton(
+                                        child: Text(
+                                          AppStrings.dialogCancel,
+                                          style: TextStyle(
+                                              color:
+                                                  CustomizedColors.whiteColor),
+                                        ),
+                                        color:
+                                            CustomizedColors.dialogCancelButton,
+                                        shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(15)),
+                                        elevation: 15,
+                                        onPressed: () {
+                                          Navigator.pop(ctxt);
+                                        },
                                       ),
                                     ),
-                                    Padding(
-                                      padding: const EdgeInsets.all(11),
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.center,
-                                        children: [
 //-----------------material button inside dialog box
-                                          Container(
-                                            height: 45,
-                                            width: 98,
-                                            child: MaterialButton(
-                                              child: Text(
-                                                AppStrings.dialogCancel,
-                                                style: TextStyle(
-                                                    color: CustomizedColors
-                                                        .whiteColor),
-                                              ),
-                                              color: CustomizedColors
-                                                  .dialogCancelButton,
-                                              shape: RoundedRectangleBorder(
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          15)),
-                                              elevation: 15,
-                                              onPressed: () {
-                                                Navigator.pop(ctxt);
-                                              },
-                                            ),
-                                          ),
-//-----------------material button inside dialog box
-                                          Container(
-                                            height: 45,
-                                            width: 98,
-                                            child: MaterialButton(
-                                              child: Text(
-                                                AppStrings.dialogSubmit,
-                                                style: TextStyle(
-                                                    color: CustomizedColors
-                                                        .whiteColor),
-                                              ),
-                                              shape: RoundedRectangleBorder(
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          15)),
-                                              color:
-                                                  CustomizedColors.accentColor,
-                                              elevation: 15,
-                                              onPressed: () {},
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    )
+                                    // Container(
+                                    //   height: 45,
+                                    //   width: 98,
+                                    //   child: MaterialButton(
+                                    //     child: Text(
+                                    //       AppStrings.dialogSubmit,
+                                    //       style: TextStyle(
+                                    //           color:
+                                    //               CustomizedColors.whiteColor),
+                                    //     ),
+                                    //     shape: RoundedRectangleBorder(
+                                    //         borderRadius:
+                                    //             BorderRadius.circular(15)),
+                                    //     color: CustomizedColors.accentColor,
+                                    //     elevation: 15,
+                                    //     onPressed: () {},
+                                    //   ),
+                                    // ),
                                   ],
                                 ),
-                              ),
-                            ));
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
+                    );
                   },
                   text: AppStrings.submitwithDictButtonText,
                 ),
@@ -487,18 +485,18 @@ class _SubmitNewDictationState extends State<SubmitNewDictation>
                             ),
                           ),
                         );
-                        DatabaseHelper.db.insertAudio(Dictation(
+                        DatabaseHelper.db.insertAudio(PatientDictation(
                           locationName: _selectedLocationName ?? "",
-                          locationId: int.tryParse(_selectedLocationId) ?? "",
+                          locationId: int.parse(_selectedLocationId) ?? "",
                           practiceName: _selectedPracticeName ?? "",
-                          practiceId: int.tryParse(_selectedPracticeId) ?? "",
+                          practiceId: int.parse(_selectedPracticeId) ?? "",
                           providerName: _selectedProviderName ?? "",
-                          providerId: int.tryParse(_selectedProvider) ?? "",
+                          providerId: int.parse(_selectedProvider) ?? "",
                           patientFirstName: _fName.text ?? "",
                           patientLastName: _lName.text ?? "",
                           patientDOB: currentDOB ?? "",
                           dos: currentDOS ?? "",
-                          isEmergencyAddOn: toggleVal ?? "",
+                          //isEmergencyAddOn: toggleVal ?? "",
                           externalDocumentTypeId: _selectedDoc ?? "",
                           appointmentTypeId: _selectedAppointment ?? "",
                           description: _descreiption.text ?? "",

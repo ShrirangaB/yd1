@@ -1,11 +1,15 @@
 import 'dart:io';
 import 'package:YOURDRS_FlutterAPP/common/app_colors.dart';
+import 'package:YOURDRS_FlutterAPP/common/app_log_helper.dart';
+import 'package:YOURDRS_FlutterAPP/common/app_strings.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:intl/intl.dart';
 import 'package:path/path.dart';
+import 'package:path_provider/path_provider.dart';
 
 class CameraActionSheet extends StatefulWidget {
   @override
@@ -109,6 +113,34 @@ class _CameraActionSheetState extends State<CameraActionSheet>
     } on PlatformException catch (e) {
       print("file not found" + e.toString());
     }
+  }
+
+  Future<String> createFileName(String mockName) async {
+    String fileName1;
+    final DateTime now = DateTime.now();
+    final DateFormat formatter = DateFormat(AppStrings.dateFormat);
+    final String formatted = formatter.format(now);
+    try {
+      fileName1 = AppStrings.name + basename(mockName).replaceAll(".", "");
+      if (fileName1.length > AppStrings.name.length) {
+        fileName1 = fileName1.substring(0, AppStrings.name.length);
+        final Directory directory = await getExternalStorageDirectory();
+        String path = '${directory.path}/${AppStrings.folderName}';
+        final myImgDir = await Directory(path).create(recursive: true);
+        final File newImage = await image.copy(
+            '${myImgDir.path}/${basename(fileName1 + '${formatted}' + AppStrings.imageFormat)}');
+        setState(() {
+          newImage;
+          print(path);
+        });
+      }
+    } catch (e, s) {
+      fileName1 = "";
+      AppLogHelper.printLogs(e, s);
+    }
+
+    print("${formatted}" + fileName1 + ".jpeg");
+    return "${formatted}" + fileName1 + ".jpeg";
   }
 
   @override
