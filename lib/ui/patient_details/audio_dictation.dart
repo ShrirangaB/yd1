@@ -396,13 +396,13 @@ class AudioDictation extends StatefulWidget {
       patientDos,
       dictationTypeId,
       caseNum,
-      docType,
+      // docType,
       appointmentType,
       practiceName,
       providerName,
       locationName,
       descp;
-  final int practiceId, providerId, locationId;
+  final int practiceId, providerId, locationId, docType;
   final bool emergency;
 
   const AudioDictation(
@@ -811,6 +811,20 @@ class _AudioDictationState extends State<AudioDictation> {
               "_" +
               '${formatted}' +
               ".mp4",
+      locationName: widget.locationName ?? "",
+      locationId: widget.locationId ?? "",
+      practiceName: widget.practiceName ?? "",
+      practiceId: widget.practiceId ?? "",
+      providerName: widget.providerName ?? "",
+      providerId: widget.providerId ?? "",
+      patientFirstName: widget.patientFName ?? "",
+      patientLastName: widget.patientLName ?? "",
+      patientDOB: widget.patientDob ?? "",
+      dos: widget.patientDos ?? "",
+      //isEmergencyAddOn: widget.emergency ?? "",
+      externalDocumentTypeId: widget.docType ?? "",
+      appointmentTypeId: int.parse(widget.appointmentType) ?? "",
+      description: widget.descp ?? "",
       // patientFirstName: widget.patientFName ?? 'NA',
       // patientLastName: widget.patientLName ?? 'NA',
       // dictationTypeId: widget.dictationTypeId ?? 'NA',

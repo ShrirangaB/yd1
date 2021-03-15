@@ -12,35 +12,36 @@ class MicButton extends StatefulWidget {
       patientLName,
       patientDob,
       patientDos,
-      dictationTypeId,
-      caseNum,
-      docType,
+      // dictationTypeId,
+      // caseNum,
+      // docType,
       appointmentType,
       practiceName,
       providerName,
       locationName,
       descp;
-  final int practiceId, providerId, locationId;
+  final int practiceId, providerId, locationId, docType;
   final bool emergency;
-  const MicButton(
-      {Key key,
-      this.patientFName,
-      this.patientLName,
-      this.patientDob,
-      this.patientDos,
-      this.dictationTypeId,
-      this.docType,
-      this.appointmentType,
-      this.caseNum,
-      this.practiceName,
-      this.providerName,
-      this.locationName,
-      this.emergency,
-      this.descp,
-      this.practiceId,
-      this.providerId,
-      this.locationId})
-      : super(key: key);
+  const MicButton({
+    Key key,
+    this.patientFName,
+    this.patientLName,
+    this.patientDob,
+    this.patientDos,
+    // this.dictationTypeId,
+
+    this.appointmentType,
+    // this.caseNum,
+    this.practiceName,
+    this.providerName,
+    this.locationName,
+    this.emergency,
+    this.descp,
+    this.practiceId,
+    this.providerId,
+    this.locationId,
+    this.docType,
+  }) : super(key: key);
   @override
   _MicButtonState createState() => _MicButtonState();
 }
@@ -88,17 +89,22 @@ class _MicButtonState extends State<MicButton> {
 
                               /// calling the audio dictation class from ui folder
                               child: AudioDictation(
-                                practiceName: null,
-                                locationName: null,
-                                providerName: null,
-                                patientFName: null,
-                                patientLName: null,
-                                patientDob: null,
-                                patientDos: null,
-                                docType: null,
-                                appointmentType: null,
-                                emergency: null,
-                                descp: null,
+                                practiceName: widget.practiceName,
+                                practiceId: widget.practiceId,
+                                locationName: widget.locationName,
+                                locationId: widget.locationId,
+                                providerName: widget.providerName,
+                                providerId: widget.providerId,
+                                patientFName: widget.patientFName,
+                                patientLName: widget.patientLName,
+                                patientDob: widget.patientDob,
+                                patientDos: widget.patientDos,
+                                docType: widget.docType,
+                                appointmentType: widget.appointmentType,
+                                emergency: widget.emergency,
+                                descp: widget.descp,
+                                dictationTypeId: _currentSelectedValue,
+                                caseNum: null,
                               ),
                             ),
                           );

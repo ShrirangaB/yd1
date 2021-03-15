@@ -261,6 +261,7 @@ class _SubmitNewDictationState extends State<SubmitNewDictation>
                 DocumentDropDown(
                   onTapDocument: (ExternalDocumentTypesList value) async {
                     _selectedDoc = value.id;
+
                     _selectedDocName = value.externalDocumentTypeName;
                     print('from UI documenrt: $value');
                   },
@@ -388,7 +389,22 @@ class _SubmitNewDictationState extends State<SubmitNewDictation>
                               //     color: CustomizedColors.accentColor,
                               //   ),
                               // ),
-                              MicButton(),
+                              MicButton(
+                                practiceName: _selectedPracticeName,
+                                practiceId: int.parse(_selectedPracticeId),
+                                locationName: _selectedLocationName,
+                                locationId: int.parse(_selectedLocationId),
+                                providerName: _selectedProviderName,
+                                providerId: int.parse(_selectedProvider),
+                                patientFName: _fName.text,
+                                patientLName: _lName.text,
+                                patientDob: currentDOB,
+                                patientDos: currentDOS,
+                                docType: _selectedDoc,
+                                appointmentType: _selectedAppointmentName,
+                                emergency: toggleVal,
+                                descp: _descreiption.text,
+                              ),
                               Padding(
                                 padding: const EdgeInsets.all(11),
                                 child: Row(
