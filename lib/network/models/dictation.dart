@@ -29,7 +29,7 @@ class PatientDictation {
   int appointmentId;
   // String CPTCodeIds;
   String dictationTypeId;
-  bool isEmergencyAddOn;
+  int isEmergencyAddOn;
   int externalDocumentTypeId;
   String description;
   String appointmentProvider;

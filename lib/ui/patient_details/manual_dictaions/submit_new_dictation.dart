@@ -6,6 +6,7 @@ import 'package:YOURDRS_FlutterAPP/network/models/appointment_type.dart';
 import 'package:YOURDRS_FlutterAPP/network/models/dictation.dart';
 import 'package:YOURDRS_FlutterAPP/network/models/document_type.dart';
 import 'package:YOURDRS_FlutterAPP/network/models/location_field_model.dart';
+import 'package:YOURDRS_FlutterAPP/network/models/photo_list.dart';
 import 'package:YOURDRS_FlutterAPP/network/models/practice.dart';
 import 'package:YOURDRS_FlutterAPP/network/models/provider_model.dart';
 import 'package:YOURDRS_FlutterAPP/widget/buttons/mic_button.dart';
@@ -20,7 +21,7 @@ import 'package:YOURDRS_FlutterAPP/widget/dropdowns/practice_field.dart';
 import 'package:YOURDRS_FlutterAPP/widget/dropdowns/provider_field.dart';
 import 'package:flutter/material.dart';
 import 'package:toggle_switch/toggle_switch.dart';
-import 'package:searchable_dropdown/searchable_dropdown.dart';
+//import 'package:searchable_dropdown/searchable_dropdown.dart';
 
 class SubmitNewDictation extends StatefulWidget {
   @override
@@ -45,7 +46,8 @@ class _SubmitNewDictationState extends State<SubmitNewDictation>
   String _selectedAppointmentName;
   String currentDOB;
   String currentDOS;
-  bool toggleVal;
+  String _imgPath;
+  int toggleVal;
 
   List<bool> _isSelected = [true, false];
 
@@ -84,8 +86,6 @@ class _SubmitNewDictationState extends State<SubmitNewDictation>
                     setState(() {
                       _selectedPracticeId = '${pValue?.id}';
                       _selectedPracticeName = pValue.name;
-
-                      print('Practice from UI: ${pValue?.id}');
                     });
                   },
                 ),
@@ -107,8 +107,6 @@ class _SubmitNewDictationState extends State<SubmitNewDictation>
                       _selectedLocationId = '${value?.id}';
                     });
                     _selectedLocationName = value.name;
-
-                    print('Location from UI: $_selectedLocationId');
                   },
                   PracticeIdList: _selectedPracticeId,
                 ),
@@ -129,8 +127,6 @@ class _SubmitNewDictationState extends State<SubmitNewDictation>
                   onTapOfProvider: (ProviderList value) async {
                     _selectedProvider = '${value?.providerId}';
                     _selectedProviderName = value.displayname;
-
-                    print('Provider from UI: $_selectedProvider');
                   },
                   PracticeLocationId: _selectedLocationId,
                 ),
@@ -149,7 +145,7 @@ class _SubmitNewDictationState extends State<SubmitNewDictation>
                 SizedBox(height: 15),
                 Container(
                   // height: 85,
-                  width: MediaQuery.of(context).size.width * 0.80,
+                  width: MediaQuery.of(context).size.width * 0.98,
                   // decoration: BoxDecoration(
                   //   border: Border.all(
                   //       color: CustomizedColors.primaryColor, width: 1.6),
@@ -185,13 +181,13 @@ class _SubmitNewDictationState extends State<SubmitNewDictation>
                 ),
                 SizedBox(height: 15),
                 Container(
-                  width: MediaQuery.of(context).size.width * 0.80,
+                  width: MediaQuery.of(context).size.width * 0.98,
                   // decoration: BoxDecoration(
                   //     border: Border.all(
                   //         color: CustomizedColors.primaryColor, width: 1.6)),
 //-------TextFeild last name
                   child: Container(
-                    width: MediaQuery.of(context).size.width * 0.95,
+                    width: MediaQuery.of(context).size.width * 95,
                     child: TextFormField(
                       validator: validateInput,
                       controller: _lName,
@@ -226,8 +222,6 @@ class _SubmitNewDictationState extends State<SubmitNewDictation>
                 DateOfBirth(
                   dobSelect: (dobvalue) {
                     currentDOB = dobvalue;
-
-                    print('From UI:' + dobvalue);
                   },
                 ),
                 SizedBox(height: 15),
@@ -246,7 +240,6 @@ class _SubmitNewDictationState extends State<SubmitNewDictation>
                 DateOfService(
                   dosSelect: (dosValue) {
                     currentDOS = dosValue;
-                    print('From UI:' + dosValue);
                   },
                 ),
                 SizedBox(height: 15),
@@ -263,7 +256,6 @@ class _SubmitNewDictationState extends State<SubmitNewDictation>
                     _selectedDoc = value.id;
 
                     _selectedDocName = value.externalDocumentTypeName;
-                    print('from UI documenrt: $value');
                   },
                   //  selectedDocumentType: null,
                 ),
@@ -283,7 +275,7 @@ class _SubmitNewDictationState extends State<SubmitNewDictation>
                   onTapOfAppointment: (AppointmentTypeList value) async {
                     _selectedAppointment = value.id;
                     _selectedAppointmentName = value.name;
-                    print('from UI Appointment: $value');
+                    print(_selectedAppointmentName);
                   },
                   //selectedAppointmentType: _selectedAppointment,
                 ),
@@ -313,15 +305,13 @@ class _SubmitNewDictationState extends State<SubmitNewDictation>
                     labels: [AppStrings.toggleYES, AppStrings.toggleNO],
                     icons: [Icons.check_circle, Icons.cancel_rounded],
                     onToggle: (toggleIndex) {
-                      // print('switched to: $toggleIndex');
                       if (toggleIndex == 0) {
-                        toggleVal = true;
+                        toggleVal = 1;
                       } else if (toggleIndex == 1) {
-                        toggleVal = false;
+                        toggleVal = 0;
                       } else {
                         return null;
                       }
-                      print(toggleVal);
                     },
                   ),
                 ),
@@ -339,7 +329,7 @@ class _SubmitNewDictationState extends State<SubmitNewDictation>
                 SizedBox(height: 15),
                 Container(
                   // height: 150,
-                  width: MediaQuery.of(context).size.width * 0.80,
+                  width: MediaQuery.of(context).size.width * 0.95,
 
 //----------------TextFeild for description
                   child: Container(
@@ -363,7 +353,7 @@ class _SubmitNewDictationState extends State<SubmitNewDictation>
                 ),
                 SizedBox(height: 15),
 //-----cupertino Action sheet
-                CameraActionSheet(),
+                CameraActionSheet(imagePath: _imgPath),
                 SizedBox(height: 15),
 //------raised Button for Submit with Dictation
                 RaisedButtonCustom(
@@ -380,15 +370,7 @@ class _SubmitNewDictationState extends State<SubmitNewDictation>
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
 //-----------------material button for audio Recorder
-                              // MaterialButton(
-                              //   onPressed: () {},
-                              //   shape: CircleBorder(),
-                              //   child: Icon(
-                              //     Icons.play_circle_outline,
-                              //     size: 65,
-                              //     color: CustomizedColors.accentColor,
-                              //   ),
-                              // ),
+
                               MicButton(
                                 practiceName: _selectedPracticeName,
                                 practiceId: int.parse(_selectedPracticeId),
@@ -401,7 +383,7 @@ class _SubmitNewDictationState extends State<SubmitNewDictation>
                                 patientDob: currentDOB,
                                 patientDos: currentDOS,
                                 docType: _selectedDoc,
-                                appointmentType: _selectedAppointmentName,
+                                appointmentType: _selectedAppointment,
                                 emergency: toggleVal,
                                 descp: _descreiption.text,
                               ),
@@ -434,24 +416,6 @@ class _SubmitNewDictationState extends State<SubmitNewDictation>
                                       ),
                                     ),
 //-----------------material button inside dialog box
-                                    // Container(
-                                    //   height: 45,
-                                    //   width: 98,
-                                    //   child: MaterialButton(
-                                    //     child: Text(
-                                    //       AppStrings.dialogSubmit,
-                                    //       style: TextStyle(
-                                    //           color:
-                                    //               CustomizedColors.whiteColor),
-                                    //     ),
-                                    //     shape: RoundedRectangleBorder(
-                                    //         borderRadius:
-                                    //             BorderRadius.circular(15)),
-                                    //     color: CustomizedColors.accentColor,
-                                    //     elevation: 15,
-                                    //     onPressed: () {},
-                                    //   ),
-                                    // ),
                                   ],
                                 ),
                               )
@@ -467,20 +431,6 @@ class _SubmitNewDictationState extends State<SubmitNewDictation>
 //------raised Button for Submitting
                 RaisedButtonCustom(
                   onPressed: () {
-                    // print("location :: $_selectedLocation");
-                    // print("Practice :: $_selectedPractice");
-                    // print("Provider :: $_selectedProvider");
-                    // print("DOB :: $currentDOB");
-                    // print("DOS :: $currentDOS");
-                    // print("Document Type :: $_selectedDoc");
-                    // print("Appointment Type :: $_selectedAppointment");
-                    // print('Emergency :: $toggleVal');
-                    // print('first name ::' + _fName.text);
-                    // print('last name ::' + _lName.text);
-                    // print('description ::' + _descreiption.text);
-                    // print("$currentPractice");
-                    //  print("$selectedDocumentType");
-
                     try {
                       if (_formKey.currentState.validate()) {
                         Scaffold.of(context).showSnackBar(
@@ -501,25 +451,32 @@ class _SubmitNewDictationState extends State<SubmitNewDictation>
                             ),
                           ),
                         );
-                        DatabaseHelper.db.insertAudio(PatientDictation(
-                          locationName: _selectedLocationName ?? "",
-                          locationId: int.parse(_selectedLocationId) ?? "",
-                          practiceName: _selectedPracticeName ?? "",
-                          practiceId: int.parse(_selectedPracticeId) ?? "",
-                          providerName: _selectedProviderName ?? "",
-                          providerId: int.parse(_selectedProvider) ?? "",
-                          patientFirstName: _fName.text ?? "",
-                          patientLastName: _lName.text ?? "",
-                          patientDOB: currentDOB ?? "",
-                          dos: currentDOS ?? "",
-                          //isEmergencyAddOn: toggleVal ?? "",
-                          externalDocumentTypeId: _selectedDoc ?? "",
-                          appointmentTypeId: _selectedAppointment ?? "",
-                          description: _descreiption.text ?? "",
-                        ));
+                        DatabaseHelper.db.insertAudioRecords(
+                          PatientDictation(
+                            locationName: _selectedLocationName ?? "",
+                            locationId: int.parse(_selectedLocationId) ?? "",
+                            practiceName: _selectedPracticeName ?? "",
+                            practiceId: int.parse(_selectedPracticeId) ?? "",
+                            providerName: _selectedProviderName ?? "",
+                            providerId: int.parse(_selectedProvider) ?? "",
+                            patientFirstName: _fName.text ?? "",
+                            patientLastName: _lName.text ?? "",
+                            patientDOB: currentDOB ?? "",
+                            dos: currentDOS ?? "",
+                            isEmergencyAddOn: toggleVal ?? "",
+                            externalDocumentTypeId: _selectedDoc ?? "",
+                            appointmentTypeId: _selectedAppointment ?? "",
+                            description: _descreiption.text ?? "",
+                          ),
+                        );
+
+                        DatabaseHelper.db.insertPhotoList(
+                          PhotoList(
+                            fileName: _imgPath ?? "",
+                          ),
+                        );
                       }
                     } on Exception catch (e) {
-                      print('exception in submit button');
                       print(e.toString());
                     }
                   },
@@ -552,7 +509,6 @@ class _SubmitNewDictationState extends State<SubmitNewDictation>
         return null;
       }
     } on Exception catch (e) {
-      print('exception in validate Input');
       print(e.toString());
     }
   }

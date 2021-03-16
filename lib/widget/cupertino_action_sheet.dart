@@ -12,6 +12,10 @@ import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 
 class CameraActionSheet extends StatefulWidget {
+  final String imagePath;
+
+  const CameraActionSheet({Key key, @required this.imagePath})
+      : super(key: key);
   @override
   _CameraActionSheetState createState() => _CameraActionSheetState();
 }
@@ -25,6 +29,7 @@ class _CameraActionSheetState extends State<CameraActionSheet>
   List imageArray = [];
   //File image;
   int gIndex;
+  String path;
   String fileName;
   String filepath;
   Map<String, String> paths;
@@ -34,6 +39,12 @@ class _CameraActionSheetState extends State<CameraActionSheet>
   FileType fileType;
   bool imageVisible = true;
   File image;
+
+  @override
+  void initState() {
+    super.initState();
+    path = widget.imagePath;
+  }
 
   ///---------------to open cupertino action sheet
   void _show(BuildContext ctx) {
@@ -69,8 +80,8 @@ class _CameraActionSheetState extends State<CameraActionSheet>
   Future openCamera() async {
     image = await ImagePicker.pickImage(
         source: ImageSource.camera, imageQuality: 50);
-    //String path = image.path;
-    //createFileName(path);
+    String path = image.path;
+    createFileName(path);
     setState(() {
       image;
       widgetVisible = true;
@@ -125,7 +136,7 @@ class _CameraActionSheetState extends State<CameraActionSheet>
       if (fileName1.length > AppStrings.name.length) {
         fileName1 = fileName1.substring(0, AppStrings.name.length);
         final Directory directory = await getExternalStorageDirectory();
-        String path = '${directory.path}/${AppStrings.folderName}';
+        path = '${directory.path}/${AppStrings.folderName}';
         final myImgDir = await Directory(path).create(recursive: true);
         final File newImage = await image.copy(
             '${myImgDir.path}/${basename(fileName1 + '${formatted}' + AppStrings.imageFormat)}');
@@ -141,11 +152,6 @@ class _CameraActionSheetState extends State<CameraActionSheet>
 
     print("${formatted}" + fileName1 + ".jpeg");
     return "${formatted}" + fileName1 + ".jpeg";
-  }
-
-  @override
-  void initState() {
-    super.initState();
   }
 
   void _close(BuildContext ctx) {
@@ -287,19 +293,6 @@ class _CameraActionSheetState extends State<CameraActionSheet>
                             )
                           : new Container(),
                 ),
-                // SizedBox(
-                //   height: 10,
-                // ),
-                // //storing images into separate folder
-                // RaisedBtn(
-                //     text: AppStrings.submitImages,
-                //     onPressed: () {
-                //       setState(() {
-                //         widgetVisible = false;
-                //         visible = false;
-                //       });
-                //     },
-                //     iconData: Icons.image),
               ],
             ),
           ),
@@ -307,9 +300,10 @@ class _CameraActionSheetState extends State<CameraActionSheet>
           CupertinoPageScaffold(
             child: Center(
               child: Container(
-                height: 70,
+                height: 65,
                 width: MediaQuery.of(context).size.width * 0.85,
                 child: RaisedButton(
+                  color: CustomizedColors.whiteColor,
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Row(

@@ -31,13 +31,13 @@ class DatabaseHelper {
     return await openDatabase(path, version: 1, onOpen: (db) {},
         onCreate: (Database db, int version) async {
       await db.execute(AppStrings.tableDictation);
-
       await db.execute(AppStrings.tableExternalAttachment);
+      await db.execute(AppStrings.tblPhotoList);
     });
   }
 
   // Insert Audio and Manual dictation
-  insertAudio(PatientDictation newAudio) async {
+  insertAudioRecords(PatientDictation newAudio) async {
     // await deleteAllAudios();
 
     var db = await database;
@@ -142,6 +142,7 @@ class DatabaseHelper {
             photoList.physicalfilename,
         AppStrings.col_PhotoListAttachmentCreatedDate: photoList.createddate
       });
+      print('insert image path $externalPhotoList');
       return externalPhotoList;
     } catch (e) {
       print(e.toString());

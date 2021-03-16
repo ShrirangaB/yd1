@@ -64,3 +64,6 @@ class AudioplayerBloc extends Bloc<AudioplayerEvent, AudioplayerState> {
     }
   }
 }
+
+AudioplayerState AudioplayerInitial() {
+}

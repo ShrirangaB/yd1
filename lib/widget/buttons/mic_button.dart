@@ -15,13 +15,13 @@ class MicButton extends StatefulWidget {
       // dictationTypeId,
       // caseNum,
       // docType,
-      appointmentType,
+      //appointmentType,
       practiceName,
       providerName,
       locationName,
       descp;
-  final int practiceId, providerId, locationId, docType;
-  final bool emergency;
+  final int practiceId, providerId, locationId, docType,appointmentType;
+  final int emergency;
   const MicButton({
     Key key,
     this.patientFName,
