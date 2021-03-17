@@ -34,11 +34,6 @@ class _ExternalProviderDropDownState extends State<ExternalProviderDropDown>
     super.didChangeDependencies();
     print(
         'didChangeDependencies PracticeLocationId ${widget.PracticeLocationId}');
-    // ExternalProvider externalProvider = await apiServices.getExternalProvider();
-    // data = externalProvider.providerList;
-
-//_currentSelectedValue=data;
-//     setState(() {});
   }
 
   List<Widget> get appBarActions {
@@ -71,20 +66,11 @@ class _ExternalProviderDropDownState extends State<ExternalProviderDropDown>
     }
     print('build PracticeLocationId ${widget.PracticeLocationId}');
     return Container(
-      //height: 55,
-      //color: Colors.yellow,
-      //height: MediaQuery.of(context).size.height * 0.07,
-      //alignment: Alignment.center,
-      //padding: const EdgeInsets.all(10),
       width: MediaQuery.of(context).size.width * 0.95,
       child: SearchableDropdown.single(
         underline: Padding(padding: EdgeInsets.all(1)),
         displayClearIcon: false,
         hint: Text('Select'),
-        // label: Text('Location',style: TextStyle(
-        //     fontSize: 16,fontWeight: FontWeight.bold,
-        //     color: Colors.black
-        // ),),
         items: data.map((item) {
           return DropdownMenuItem<ProviderList>(
               child: Text(
@@ -100,8 +86,6 @@ class _ExternalProviderDropDownState extends State<ExternalProviderDropDown>
           setState(() {
             _currentSelectedValue = value;
             widget.onTapOfProvider(value);
-            // providerList=value;
-            // print('practiceList $providerList');
           });
         },
       ),

@@ -112,6 +112,6 @@ class AppointmentTypeList {
 
   @override
   String toString() {
-    return '$id';
+    return '$id' '$name';
   }
 }

@@ -61,8 +61,8 @@ dependencies:
   rflutter_alert: ^1.0.3
   # to show to message while recording the audio
   fluttertoast: ^7.1.8
-  #audio wave
-  audio_wave: ^0.0.3
+  # to view pdf document
+  advance_pdf_viewer: ^1.2.2
 
 dev_dependencies:
   flutter_test:

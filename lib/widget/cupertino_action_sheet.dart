@@ -14,8 +14,7 @@ import 'package:path_provider/path_provider.dart';
 class CameraActionSheet extends StatefulWidget {
   final String imagePath;
 
-  const CameraActionSheet({Key key, @required this.imagePath})
-      : super(key: key);
+  const CameraActionSheet({Key key, this.imagePath}) : super(key: key);
   @override
   _CameraActionSheetState createState() => _CameraActionSheetState();
 }
@@ -32,6 +31,7 @@ class _CameraActionSheetState extends State<CameraActionSheet>
   String path;
   String fileName;
   String filepath;
+  String venky;
   Map<String, String> paths;
   List<String> extensions;
   bool isLoadingPath = false;
@@ -44,6 +44,8 @@ class _CameraActionSheetState extends State<CameraActionSheet>
   void initState() {
     super.initState();
     path = widget.imagePath;
+    print('%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%');
+    print(path);
   }
 
   ///---------------to open cupertino action sheet
@@ -97,17 +99,24 @@ class _CameraActionSheetState extends State<CameraActionSheet>
         filepath = null;
         paths = await FilePicker.getMultiFilePath(
             type: fileType != null ? fileType : FileType.image,
-            allowedExtensions: extensions);
+            allowedExtensions: extensions,
+            allowCompression: true);
+
         print(paths);
+
+        // return paths.values.toList();
       } else {
         filepath = await FilePicker.getFilePath(
             type: fileType != null ? fileType : FileType.image,
-            allowedExtensions: extensions);
+            allowedExtensions: extensions,
+            allowCompression: true);
+
         print(filepath);
+
         paths = null;
       }
     } on PlatformException catch (e) {
-      print("file not fund" + e.toString());
+      print("file not found" + e.toString());
     }
     try {
       if (!mounted) return;

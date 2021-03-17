@@ -1,5 +1,8 @@
 // import 'dart:ffi';
+import 'dart:io';
+
 import 'package:YOURDRS_FlutterAPP/common/app_colors.dart';
+import 'package:YOURDRS_FlutterAPP/common/app_log_helper.dart';
 import 'package:YOURDRS_FlutterAPP/common/app_strings.dart';
 import 'package:YOURDRS_FlutterAPP/helper/db_helper.dart';
 import 'package:YOURDRS_FlutterAPP/network/models/appointment_type.dart';
@@ -19,8 +22,16 @@ import 'package:YOURDRS_FlutterAPP/widget/dropdowns/documenttype.dart';
 import 'package:YOURDRS_FlutterAPP/widget/dropdowns/location_field.dart';
 import 'package:YOURDRS_FlutterAPP/widget/dropdowns/practice_field.dart';
 import 'package:YOURDRS_FlutterAPP/widget/dropdowns/provider_field.dart';
+import 'package:file_picker/file_picker.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:toggle_switch/toggle_switch.dart';
+import 'package:flutter/services.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:path/path.dart';
+import 'package:path_provider/path_provider.dart';
+
 //import 'package:searchable_dropdown/searchable_dropdown.dart';
 
 class SubmitNewDictation extends StatefulWidget {
@@ -48,6 +59,26 @@ class _SubmitNewDictationState extends State<SubmitNewDictation>
   String currentDOS;
   String _imgPath;
   int toggleVal;
+  File image;
+  bool widgetVisible = false;
+  bool visible = false;
+  Directory directory;
+  bool isSwitched = false;
+  List imageArray = [];
+  //File image;
+  int gIndex;
+  String path;
+  String fileName;
+  String filepath;
+  String venky;
+  Map<String, String> paths;
+  List<String> extensions;
+  bool isLoadingPath = false;
+  bool isMultiPick = false;
+  FileType fileType;
+  bool imageVisible = true;
+
+  final DateFormat formatter = DateFormat(AppStrings.dateFormat);
 
   List<bool> _isSelected = [true, false];
 
@@ -352,8 +383,170 @@ class _SubmitNewDictationState extends State<SubmitNewDictation>
                   ),
                 ),
                 SizedBox(height: 15),
+                //------------visibility
+                Visibility(
+                  visible: widgetVisible,
+                  child: Container(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Wrap(children: [
+                          Container(
+                            decoration: BoxDecoration(
+                              border: Border.all(
+                                color: CustomizedColors.homeSubtitleColor,
+                              ),
+                            ),
+                            height: 100,
+                            width: MediaQuery.of(context).size.width * 0.85,
+                            // color: Colors.green,
+
+                            child: Center(
+
+                                // color: CustomizedColors.homeSubtitleColor,
+                                child: Stack(children: [
+                              image == null
+                                  ? Text("no image selected")
+                                  : Image.file(
+                                      image,
+                                      fit: BoxFit.contain,
+                                    ),
+                              Positioned(
+                                right: -10,
+                                top: -5,
+                                child: Visibility(
+                                  visible: imageVisible,
+                                  child: IconButton(
+                                    icon: new Icon(
+                                      Icons.close,
+                                      color: CustomizedColors
+                                          .signInButtonTextColor,
+                                    ),
+                                    onPressed: () {
+                                      setState(() {
+                                        image = null;
+                                        imageVisible = false;
+                                      });
+                                    },
+                                  ),
+                                ),
+                              ),
+                            ])),
+                          ),
+                        ]),
+                      ],
+                    ),
+                  ),
+                ),
+                //-----------------visibility
+                Visibility(
+                  visible: visible,
+                  child: Column(
+                    children: [
+                      Builder(
+                        builder: (BuildContext context) => isLoadingPath
+                            ? Padding(
+                                padding: const EdgeInsets.only(bottom: 10.0),
+                                child: const CircularProgressIndicator())
+                            : filepath != null ||
+                                    (paths != null &&
+                                        paths.values != null &&
+                                        paths.values.isNotEmpty)
+                                ? new Container(
+                                    decoration: BoxDecoration(
+                                      border: Border.all(
+                                        color:
+                                            CustomizedColors.homeSubtitleColor,
+                                      ),
+                                    ),
+                                    //   padding: const EdgeInsets.only(bottom: 30.0),
+                                    height: 100,
+                                    width: MediaQuery.of(context).size.width *
+                                        0.85,
+                                    child: new ListView.separated(
+                                      scrollDirection: Axis.horizontal,
+                                      itemCount:
+                                          paths != null && paths.isNotEmpty
+                                              ? paths.length
+                                              : 1,
+                                      itemBuilder:
+                                          (BuildContext context, index) {
+                                        final bool isMultiPath =
+                                            paths != null && paths.isNotEmpty;
+                                        final filePath1 = isMultiPath
+                                            ? paths.values
+                                                .toList()[index]
+                                                .toString()
+                                            : filepath;
+                                        print(filePath1);
+                                        return Container(
+                                          color: CustomizedColors
+                                              .homeSubtitleColor,
+                                          margin: const EdgeInsets.all(8),
+                                          child: Stack(children: [
+                                            filePath1 != null
+                                                ? Image.file(
+                                                    File(filePath1),
+                                                    fit: BoxFit.contain,
+                                                  )
+                                                : Container(),
+                                            Positioned(
+                                              right: -10,
+                                              top: -5,
+                                              child: IconButton(
+                                                icon: new Icon(
+                                                  Icons.close,
+                                                  //color: CustomizedColors.signInButtonTextColor,
+                                                ),
+                                                onPressed: () {
+                                                  setState(() {
+                                                    // paths.values.toList().removeAt(index);
+                                                    var filename = basename(
+                                                        paths.values
+                                                            .toList()[index]);
+                                                    print(
+                                                        'remove filename $fileName');
+                                                    paths.remove(filename);
+                                                  });
+                                                },
+                                              ),
+                                            ),
+                                          ]),
+                                        );
+                                      },
+                                      separatorBuilder:
+                                          (BuildContext context, int index) =>
+                                              new Divider(),
+                                    ),
+                                  )
+                                : new Container(),
+                      ),
+                    ],
+                  ),
+                ),
 //-----cupertino Action sheet
-                CameraActionSheet(imagePath: _imgPath),
+                RaisedButton(
+                  color: CustomizedColors.whiteColor,
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Icon(
+                          Icons.camera_alt,
+                          color: CustomizedColors.accentColor,
+                          size: 45,
+                        ),
+                        Text(
+                          'Add Image/Take Picture',
+                          style: TextStyle(color: CustomizedColors.accentColor),
+                        ),
+                      ],
+                    ),
+                  ),
+                  onPressed: () => _show(context),
+                ),
                 SizedBox(height: 15),
 //------raised Button for Submit with Dictation
                 RaisedButtonCustom(
@@ -430,7 +623,11 @@ class _SubmitNewDictationState extends State<SubmitNewDictation>
                 SizedBox(height: 15),
 //------raised Button for Submitting
                 RaisedButtonCustom(
-                  onPressed: () {
+                  onPressed: () async {
+                    print(
+                        '***************************************************************');
+                    print(_imgPath);
+
                     try {
                       if (_formKey.currentState.validate()) {
                         Scaffold.of(context).showSnackBar(
@@ -453,6 +650,7 @@ class _SubmitNewDictationState extends State<SubmitNewDictation>
                         );
                         DatabaseHelper.db.insertAudioRecords(
                           PatientDictation(
+                            attachmentType: '.mp4',
                             locationName: _selectedLocationName ?? "",
                             locationId: int.parse(_selectedLocationId) ?? "",
                             practiceName: _selectedPracticeName ?? "",
@@ -472,9 +670,22 @@ class _SubmitNewDictationState extends State<SubmitNewDictation>
 
                         DatabaseHelper.db.insertPhotoList(
                           PhotoList(
-                            fileName: _imgPath ?? "",
+                            fileName: paths ?? "",
                           ),
                         );
+                        // final String formatted = formatter.format(now);
+
+                        // DatabaseHelper.db.insertPhotoList(PhotoList(
+                        //     attachmentname:
+                        //         '${item.patient.displayName ?? ''}' +
+                        //             "_" +
+                        //             '${formatted}' +
+                        //             '_' +
+                        //             basename('${image}') +
+                        //             "_",
+                        //     createddate: '${DateTime.now()}',
+                        //     attachmenttype: AppStrings.imageFormat,
+                        //     physicalfilename: '${image.path}'));
                       }
                     } on Exception catch (e) {
                       print(e.toString());
@@ -501,6 +712,7 @@ class _SubmitNewDictationState extends State<SubmitNewDictation>
     );
   }
 
+  // ignore: missing_return
   String validateInput(String value) {
     try {
       if (value.length == 0) {
@@ -511,6 +723,121 @@ class _SubmitNewDictationState extends State<SubmitNewDictation>
     } on Exception catch (e) {
       print(e.toString());
     }
+  }
+
+  ///---------------to open cupertino action sheet
+  _show(BuildContext ctx) {
+    showCupertinoModalPopup(
+      context: ctx,
+      builder: (ctctc) => CupertinoActionSheet(
+          actions: [
+            CupertinoActionSheetAction(
+                onPressed: () {
+                  openCamera();
+                  Navigator.pop(ctctc);
+                },
+                child: Text('Camera')),
+            CupertinoActionSheetAction(
+                onPressed: () {
+                  openGallery();
+                  Navigator.pop(ctctc);
+                },
+                child: Text('Open Gallery')),
+          ],
+          cancelButton: CupertinoActionSheetAction(
+            child: const Text('Cancel'),
+            //isDefaultAction: true,
+            isDestructiveAction: true,
+            onPressed: () {
+              Navigator.pop(ctctc);
+            },
+          )),
+    );
+  }
+
+  ///-----------------to open the camera in phone
+  Future openCamera() async {
+    image = await ImagePicker.pickImage(
+        source: ImageSource.camera, imageQuality: 50);
+    String path = image.path;
+    createFileName(path);
+    setState(() {
+      image;
+      widgetVisible = true;
+      visible = false;
+    });
+  }
+
+  ///---------------------to open the gallery in phone
+  Future openGallery() async {
+    setState(() => isLoadingPath = true);
+    try {
+      if (!isMultiPick) {
+        filepath = null;
+        paths = await FilePicker.getMultiFilePath(
+            type: fileType != null ? fileType : FileType.image,
+            allowedExtensions: extensions,
+            allowCompression: true);
+
+        print(paths);
+
+        // return paths.values.toList();
+      } else {
+        filepath = await FilePicker.getFilePath(
+            type: fileType != null ? fileType : FileType.image,
+            allowedExtensions: extensions,
+            allowCompression: true);
+
+        print(filepath);
+
+        paths = null;
+      }
+    } on PlatformException catch (e) {
+      print("file not found" + e.toString());
+    }
+    try {
+      if (!mounted) return;
+      setState(() {
+        isLoadingPath = false;
+        fileName = filepath != null
+            ? filepath.split('/').last
+            : paths != null
+                ? paths.keys.toString()
+                : '...';
+        visible = true;
+        widgetVisible = false;
+      });
+    } on PlatformException catch (e) {
+      print("file not found" + e.toString());
+    }
+  }
+
+  Future<String> createFileName(String mockName) async {
+    String fileName1;
+    final DateTime now = DateTime.now();
+    final DateFormat formatter = DateFormat(AppStrings.dateFormat);
+    final String formatted = formatter.format(now);
+    try {
+      fileName1 = AppStrings.name + basename(mockName).replaceAll(".", "");
+      if (fileName1.length > AppStrings.name.length) {
+        fileName1 = fileName1.substring(0, AppStrings.name.length);
+        final Directory directory = await getExternalStorageDirectory();
+        path = '${directory.path}/${AppStrings.folderName}';
+        final myImgDir = await Directory(path).create(recursive: true);
+        final File newImage = await image.copy(
+            '${myImgDir.path}/${basename(fileName1 + '${formatted}' + AppStrings.imageFormat)}');
+        setState(() {
+          newImage;
+          print(path);
+        });
+      }
+    } catch (e, s) {
+      fileName1 = "";
+      AppLogHelper.printLogs(e, s);
+    }
+
+    print("${formatted}" + fileName1 + ".jpeg");
+    return "${formatted}" + fileName1 + ".jpeg";
   }
 
   @override

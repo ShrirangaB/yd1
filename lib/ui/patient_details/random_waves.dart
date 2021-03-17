@@ -1,5 +1,6 @@
 import 'package:YOURDRS_FlutterAPP/common/app_colors.dart';
-import 'package:audio_wave/audio_wave.dart';
+import 'package:YOURDRS_FlutterAPP/ui/patient_details/manual_dictaions/audio_wave.dart';
+
 import 'package:flutter/material.dart';
 import 'dart:math';
 

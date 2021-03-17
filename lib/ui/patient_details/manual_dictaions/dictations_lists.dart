@@ -5,6 +5,7 @@ import 'package:YOURDRS_FlutterAPP/network/models/dictations_model.dart';
 import 'package:YOURDRS_FlutterAPP/network/services/appointment_service.dart';
 import 'package:YOURDRS_FlutterAPP/widget/audioplayer/audioplayerr.dart';
 import 'package:YOURDRS_FlutterAPP/widget/modal_bottom_sheet.dart';
+import 'package:advance_pdf_viewer/advance_pdf_viewer.dart';
 
 //import 'package:YOURDRS_FlutterAPP/widget/buttons/mic_button.dart';
 import 'package:flutter/material.dart';
@@ -16,6 +17,7 @@ class AllDictations extends StatefulWidget {
 
 class _AllDictationsState extends State<AllDictations>
     with AutomaticKeepAliveClientMixin {
+  PDFDocument document;
   List allDtion = List();
   Services apiServices = Services();
 
@@ -31,6 +33,12 @@ class _AllDictationsState extends State<AllDictations>
   @override
   void initState() {
     super.initState();
+    loadDocument();
+  }
+
+  loadDocument() async {
+    document = await PDFDocument.fromURL(
+        'http://conorlastowka.com/book/CitationNeededBook-Sample.pdf');
   }
 
   @override
@@ -55,7 +63,8 @@ class _AllDictationsState extends State<AllDictations>
                     Text(
                       AppStrings.textUploaded,
                       style: TextStyle(
-                          color: CustomizedColors.accentColor, fontSize: 16),
+                          color: CustomizedColors.uploadGreenColor,
+                          fontSize: 16),
                     ),
                     SizedBox(
                       width: width * 0.045,
@@ -84,12 +93,41 @@ class _AllDictationsState extends State<AllDictations>
                   children: [
                     IconButton(
                       padding: EdgeInsets.all(0),
-                      onPressed: () {},
+                      onPressed: () {
+                        showDialog(
+                            context: context,
+                            builder: (ctx) => AlertDialog(
+                                  insetPadding: EdgeInsets.symmetric(
+                                      vertical: 80, horizontal: 10),
+                                  contentPadding: EdgeInsets.zero,
+                                  content: Container(
+                                    width:
+                                        MediaQuery.of(context).size.width * 80,
+                                    child: PDFViewer(
+                                      showNavigation: false,
+                                      showPicker: false,
+                                      scrollDirection: Axis.vertical,
+                                      document: document,
+                                      zoomSteps: 1,
+                                    ),
+                                  ),
+                                  actions: [
+                                    FlatButton(
+                                      child: Text('Close'),
+                                      onPressed: () {
+                                        Navigator.of(context,
+                                                rootNavigator: true)
+                                            .pop();
+                                      },
+                                    ),
+                                  ],
+                                ));
+                      },
                       icon: Icon(
                         Icons.remove_red_eye,
                         size: 30,
                       ),
-                      color: CustomizedColors.homeSubtitleColor,
+                      color: CustomizedColors.accentColor,
                     ),
                     IconButton(
                       padding: EdgeInsets.all(0),
@@ -113,7 +151,7 @@ class _AllDictationsState extends State<AllDictations>
                                           'Cancel',
                                           style: TextStyle(fontSize: 18),
                                         ),
-                                        color: CustomizedColors.cameraIconcolor,
+                                        color: CustomizedColors.accentColor,
                                         shape: StadiumBorder(),
                                         onPressed: () {
                                           Navigator.of(context).pop();
@@ -131,7 +169,7 @@ class _AllDictationsState extends State<AllDictations>
                         Icons.play_circle_fill,
                         size: 30,
                       ),
-                      color: CustomizedColors.homeSubtitleColor,
+                      color: CustomizedColors.accentColor,
                     ),
                   ],
                 ),

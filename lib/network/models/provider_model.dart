@@ -80,4 +80,9 @@ class ProviderList {
     data['suffix'] = this.suffix;
     return data;
   }
+
+  @override
+  String toString() {
+    return '$providerId' '$displayname';
+  }
 }

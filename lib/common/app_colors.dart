@@ -29,6 +29,8 @@ class CustomizedColors {
   static const dialogCancelButton = Colors.grey;
   static const inactiveFgColorCustom = Color.fromRGBO(0, 0, 0, 1);
   static const activeRedColor = Colors.red;
+  static const uploadGreenColor = Colors.green;
+
   //
   static const waveColor = Color.fromRGBO(30, 82, 163, 1);
   static const iconColors = Color.fromRGBO(85, 85, 85, 1);

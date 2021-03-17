@@ -9,7 +9,7 @@ import 'package:YOURDRS_FlutterAPP/common/app_strings.dart';
 import 'package:YOURDRS_FlutterAPP/helper/db_helper.dart';
 import 'package:YOURDRS_FlutterAPP/network/models/dictation.dart';
 import 'package:YOURDRS_FlutterAPP/ui/patient_details/random_waves.dart';
-import 'package:audio_wave/audio_wave.dart';
+
 import 'package:file/local.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_audio_recorder/flutter_audio_recorder.dart';
