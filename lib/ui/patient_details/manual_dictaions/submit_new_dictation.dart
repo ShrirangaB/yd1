@@ -8,10 +8,12 @@ import 'package:YOURDRS_FlutterAPP/helper/db_helper.dart';
 import 'package:YOURDRS_FlutterAPP/network/models/appointment_type.dart';
 import 'package:YOURDRS_FlutterAPP/network/models/dictation.dart';
 import 'package:YOURDRS_FlutterAPP/network/models/document_type.dart';
+import 'package:YOURDRS_FlutterAPP/network/models/external_dictation_attachment.dart';
 import 'package:YOURDRS_FlutterAPP/network/models/location_field_model.dart';
 import 'package:YOURDRS_FlutterAPP/network/models/photo_list.dart';
 import 'package:YOURDRS_FlutterAPP/network/models/practice.dart';
 import 'package:YOURDRS_FlutterAPP/network/models/provider_model.dart';
+import 'package:YOURDRS_FlutterAPP/network/services/external_dictation_attachment_service.dart';
 import 'package:YOURDRS_FlutterAPP/widget/buttons/mic_button.dart';
 import 'package:YOURDRS_FlutterAPP/widget/buttons/raised_buttons.dart';
 import 'package:YOURDRS_FlutterAPP/widget/cupertino_action_sheet.dart';
@@ -45,6 +47,7 @@ class _SubmitNewDictationState extends State<SubmitNewDictation>
   final _fName = TextEditingController();
   final _lName = TextEditingController();
   final _descreiption = TextEditingController();
+  var statusCode;
   String _selectedLocationName;
   String _selectedPracticeName;
   String _selectedProviderName;
@@ -306,7 +309,6 @@ class _SubmitNewDictationState extends State<SubmitNewDictation>
                   onTapOfAppointment: (AppointmentTypeList value) async {
                     _selectedAppointment = value.id;
                     _selectedAppointmentName = value.name;
-                    print(_selectedAppointmentName);
                   },
                   //selectedAppointmentType: _selectedAppointment,
                 ),
@@ -704,6 +706,14 @@ class _SubmitNewDictationState extends State<SubmitNewDictation>
                   },
                   text: AppStrings.clearAll,
                 ),
+
+                ///-----------------------Post to API button
+                RaisedButtonCustom(
+                  onPressed: () async {
+                    await saveAttachmentDictation();
+                  },
+                  text: 'Post to APi',
+                ),
               ],
             ),
           ),
@@ -840,7 +850,49 @@ class _SubmitNewDictationState extends State<SubmitNewDictation>
     return "${formatted}" + fileName1 + ".jpeg";
   }
 
+  saveAttachmentDictation() async {
+    try {
+      ExternalDictationAttachment apiAttachmentPostServices =
+          ExternalDictationAttachment();
+      SaveExternalDictationOrAttachment saveDictationAttachments =
+          await apiAttachmentPostServices.postApiServiceMethod(
+              int.parse(_selectedPracticeId),
+              int.parse(_selectedLocationId),
+              int.parse(_selectedProvider),
+              _fName.text,
+              _lName.text,
+              currentDOB,
+              currentDOS,
+              _selectedDoc,
+              _selectedAppointment,
+              toggleVal,
+              _descreiption.text);
+      statusCode = saveDictationAttachments?.header?.statusCode;
+      //printing status code
+      print("status $statusCode");
+    } catch (e) {
+      print('SaveAttachmentDictation exception ${e.toString()}');
+    }
+  }
+
   @override
   // TODO: implement wantKeepAlive
   bool get wantKeepAlive => true;
 }
+
+// SaveDictations() async {
+//   try {
+//     PostDictationsService apiPostServices = PostDictationsService();
+//     PostDictationsModel saveDictations = await apiPostServices.postApiMethod(
+//         int.parse(memberId),
+//         dob,
+//         int.parse(id),
+//         int.parse(dictationId),
+//         int.parse(episodId),
+//         int.parse(episodeAppointmentRequestId));
+//     data = saveDictations?.header?.statusCode; //.ptinting status code
+//     print("status $data");
+//   } catch (e) {
+//     print('SaveDictations exception ${e.toString()}');
+//   }
+// }

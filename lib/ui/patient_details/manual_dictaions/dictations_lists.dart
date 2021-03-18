@@ -16,7 +16,8 @@ class AllDictations extends StatefulWidget {
 }
 
 class _AllDictationsState extends State<AllDictations>
-    with AutomaticKeepAliveClientMixin {
+// with AutomaticKeepAliveClientMixin
+{
   PDFDocument document;
   List allDtion = List();
   Services apiServices = Services();
@@ -184,7 +185,7 @@ class _AllDictationsState extends State<AllDictations>
     );
   }
 
-  @override
-  // TODO: implement wantKeepAlive
-  bool get wantKeepAlive => true;
+  // @override
+  // // TODO: implement wantKeepAlive
+  // bool get wantKeepAlive => true;
 }

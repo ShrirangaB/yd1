@@ -261,4 +261,7 @@ class ApiUrlConstants {
   //all dictations api
   static const dictations =
       AppConstants.dioBaseUrl + "api/Dictation/GetAllDictations";
+  //all dictations api
+  static const allDictationsAttachment = AppConstants.dioBaseUrl +
+      "api/Dictation/SaveExternalDictationOrAttachment";
 }
